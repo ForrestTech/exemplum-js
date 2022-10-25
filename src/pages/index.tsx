@@ -50,6 +50,31 @@ const Home: NextPage = () => {
             documentation="https://www.prisma.io/docs/"
           />
         </div>
+        <div>
+          Tasks
+          <ul>
+            <li>Fix database integration</li>
+            <li>Create Basic Page Layout</li>
+            <li>Create footer</li>
+            <li>Create Navbar</li>
+            <li>Signin/out in Navbar</li>
+            <li>Add Main logo</li>
+            <li>Add Main Text and buttons</li>
+            <li>Add side menu</li>
+            <li>Authentication on pages</li>
+            <li>Weather forecast endpoint</li>
+            <li>Weather forecast page</li>
+            <li>Get preview working</li>
+            <li>Get production working</li>
+            <li>Task list API</li>
+            <li>Task list UI</li>
+            <li>Log rocket integration</li>
+            <li>Toast notification integration</li>
+            <li>React table integration</li>
+            <li>Ably integration</li>
+            <li>Growthbook integration</li>
+          </ul>
+        </div>
         <div className="flex w-full items-center justify-center pt-6 text-2xl text-blue-500">
           {hello.data ? <p>{hello.data.greeting}</p> : <p>Loading..</p>}
         </div>
