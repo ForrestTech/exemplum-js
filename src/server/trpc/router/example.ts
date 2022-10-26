@@ -14,9 +14,11 @@ export const exampleRouter = router({
   }),
   createExample: publicProcedure
     .input(z.object({ name: z.string() }))
-    .mutation(({ ctx, input }) => {
-      return ctx.prisma.example.create({
+    .mutation(async ({ ctx, input }) => {
+      const newExample = await ctx.prisma.example.create({
         data: input,
       });
+
+      return { success: true, example: newExample };
     }),
 });

@@ -8,7 +8,7 @@ const Home: NextPage = () => {
   const mutation = trpc.example.createExample.useMutation();
 
   const handleCreateExample = async () => {
-    const name = "John Doe";
+    const name = "Jane Doe";
     mutation.mutate({ name });
   };
 
@@ -52,6 +52,7 @@ const Home: NextPage = () => {
             <li>Get production working</li>
             <li>Task list API</li>
             <li>Task list UI</li>
+            <li>Vercel analytics @vercel/analytics</li>
             <li>Log rocket integration</li>
             <li>Toast notification integration</li>
             <li>React table integration</li>
