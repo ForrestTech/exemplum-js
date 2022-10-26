@@ -4,6 +4,7 @@ import Image from "next/image";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { trpc } from "../utils/trpc";
 import Script from "next/script";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
@@ -90,8 +91,8 @@ const AppHead = ({ title }: { title: string }) => (
 );
 
 const TaskList = () => (
-  <>
-    <h2>Still to do</h2>
+  <div>
+    <p className="font-medium">Still to do:</p>
     <ul>
       <li>Create Basic Page Layout</li>
       <li>Create Navbar</li>
@@ -122,24 +123,22 @@ const TaskList = () => (
       <li>Schedule Task Solution</li>
       <li>SaaS messaging functions</li>
     </ul>
-  </>
+  </div>
 );
 
 const NavBar = () => (
   <nav className="rounded border-gray-200 bg-teal-500 px-2 py-2.5 dark:bg-gray-900 sm:px-4">
     <div className="container mx-auto flex flex-wrap items-center justify-between">
-      <a href="https://flowbite.com/" className="flex items-center">
-        <span className="self-center whitespace-nowrap text-2xl font-light tracking-wider text-white">
-          Exemplum
-        </span>
-      </a>
+      <span className="self-center whitespace-nowrap text-2xl font-light tracking-wider text-white">
+        <Link href="/">Exemplum</Link>
+      </span>
       <div className="hidden w-full md:block md:w-auto">
         <ul className="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-teal-500 md:text-sm md:font-medium md:dark:bg-gray-900">
           <li>
             <button
               id="dropdownNavbarLink"
               data-dropdown-toggle="dropdownNavbar"
-              className="flex w-full items-center justify-between border-b border-gray-100 py-2 pr-4 pl-3 font-medium text-white hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:text-white md:w-auto md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 md:dark:hover:bg-transparent"
+              className="flex w-full items-center justify-between border-b border-gray-100 p-2 font-medium text-white hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:text-white md:w-auto md:border-0 md:hover:bg-slate-900/5 md:dark:hover:bg-transparent"
             >
               SUPPORT{" "}
               <svg
@@ -165,13 +164,8 @@ const NavBar = () => (
                 className="py-1 text-sm text-white dark:text-gray-400"
                 aria-labelledby="dropdownLargeButton"
               >
-                <li>
-                  <a
-                    href="#"
-                    className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                  >
-                    Dashboard
-                  </a>
+                <li className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white">
+                  Community Support
                 </li>
               </ul>
               <div className="py-1">
