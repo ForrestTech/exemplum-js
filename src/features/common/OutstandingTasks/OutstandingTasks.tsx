@@ -2,8 +2,8 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>Create footer</li>
       <li>Create side menu</li>
+      <li>Add license</li>
       <li>Add Main logo</li>
       <li>Add Main Text and buttons</li>
       <li>Add side menu</li>
