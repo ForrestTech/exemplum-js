@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePopper } from "react-popper";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export const NavBar = () => (
   <nav className="bg-emerald-500  dark:bg-neutral-900">
@@ -14,12 +15,59 @@ export const NavBar = () => (
         <SupportDropDown />
         <span className="border-l-2 border-white" />
         <NavBarIconList />
+        <LoginControl />
       </div>
     </div>
   </nav>
 );
 
-const NavBarIconList = () => <ColorSchemeToggle />;
+const SupportDropDown = () => {
+  return (
+    <Menu as="div" className="relative inline-block text-left">
+      <div>
+        <Menu.Button className="inline-flex w-full justify-center rounded-md px-4 py-2 text-sm font-medium uppercase text-white shadow-sm hover:bg-slate-900/5">
+          Support
+          <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+        </Menu.Button>
+      </div>
+
+      <Transition
+        as={Fragment}
+        enter="transition ease-out duration-100"
+        enterFrom="transform opacity-0 scale-95"
+        enterTo="transform opacity-100 scale-100"
+        leave="transition ease-in duration-75"
+        leaveFrom="transform opacity-100 scale-100"
+        leaveTo="transform opacity-0 scale-95"
+      >
+        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+          <div className="py-1">
+            <Menu.Item>
+              <span className="block py-2 px-4 text-sm text-gray-700 dark:text-gray-400">
+                Community Support
+              </span>
+            </Menu.Item>
+            <Menu.Item>
+              <a
+                href="#"
+                className="block  px-4 py-2 text-sm font-medium text-emerald-500 hover:bg-gray-400/5 hover:underline"
+              >
+                Github Discussions
+              </a>
+            </Menu.Item>
+          </div>
+        </Menu.Items>
+      </Transition>
+    </Menu>
+  );
+};
+
+const NavBarIconList = () => (
+  <>
+    <ColorSchemeToggle />
+    <GitHubIcon />
+  </>
+);
 
 const ColorSchemeToggle = () => {
   const getIsDarkTheme = () => {
@@ -71,7 +119,7 @@ const ColorSchemeToggle = () => {
         onClick={() => handleToggleColorScheme()}
         className="pb-1 pl-2 align-middle text-white"
       >
-        {darkTheme ? (
+        {typeof window !== "undefined" && darkTheme ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -108,7 +156,7 @@ const ColorSchemeToggle = () => {
           ref={setPopper}
           style={styles.popper}
           {...attributes.popper}
-          className="text-white"
+          className="bg-white p-1 text-black"
         >
           Toggle Dark Mode
         </div>
@@ -117,43 +165,138 @@ const ColorSchemeToggle = () => {
   );
 };
 
-const SupportDropDown = () => {
-  return (
-    <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <Menu.Button className="inline-flex w-full justify-center rounded-md px-4 py-2 text-sm font-medium uppercase text-white shadow-sm hover:bg-slate-900/5">
-          Support
-          <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
-        </Menu.Button>
-      </div>
+const GitHubIcon = () => {
+  const [visible, setVisibility] = useState(false);
+  const [reference, setReference] = useState<HTMLButtonElement | null>(null);
+  const [popper, setPopper] = useState<HTMLDivElement | null>(null);
+  const { styles, attributes } = usePopper(reference, popper, {
+    placement: "bottom",
+    modifiers: [
+      {
+        name: "offset",
+        enabled: true,
+        options: {
+          offset: [0, 10],
+        },
+      },
+    ],
+  });
 
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
+  return (
+    <>
+      <button
+        type="button"
+        ref={setReference}
+        onMouseEnter={() => setVisibility(true)}
+        onMouseLeave={() => setVisibility(false)}
+        className="pb-1 pl-2 align-middle"
       >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="py-1">
-            <Menu.Item>
-              <span className="block py-2 px-4 text-sm text-gray-700 dark:text-gray-400">
-                Community Support
-              </span>
-            </Menu.Item>
-            <Menu.Item>
-              <a
-                href="#"
-                className="block  px-4 py-2 text-sm font-medium text-emerald-500 hover:bg-gray-400/5 hover:underline"
-              >
-                Github Discussions
-              </a>
-            </Menu.Item>
-          </div>
-        </Menu.Items>
-      </Transition>
-    </Menu>
+        <a
+          href="https://github.com/ForrestTech/exemplum-js"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <svg
+            width="22px"
+            height="22px"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="mb-1 ml-2 inline cursor-pointer rounded-full text-white hover:bg-gray-200/30"
+          >
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+        </a>
+      </button>
+      {visible && (
+        <div
+          ref={setPopper}
+          style={styles.popper}
+          {...attributes.popper}
+          className="bg-white p-1 text-black"
+        >
+          Visit Repo
+        </div>
+      )}
+    </>
+  );
+};
+
+const LoginControl = () => {
+  const { data: sessionData } = useSession();
+
+  const [visible, setVisibility] = useState(false);
+  const [reference, setReference] = useState<HTMLButtonElement | null>(null);
+  const [popper, setPopper] = useState<HTMLDivElement | null>(null);
+  const { styles, attributes } = usePopper(reference, popper, {
+    placement: "bottom",
+    modifiers: [
+      {
+        name: "offset",
+        enabled: true,
+        options: {
+          offset: [0, 10],
+        },
+      },
+    ],
+  });
+
+  return (
+    <>
+      <button
+        type="button"
+        ref={setReference}
+        onMouseEnter={() => setVisibility(true)}
+        onMouseLeave={() => setVisibility(false)}
+        onClick={sessionData ? () => signOut() : () => signIn()}
+        className="pb-1 pl-2 align-middle"
+      >
+        {sessionData ? (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="h-6 w-6 cursor-pointer rounded-full text-white hover:bg-gray-200/30"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+            />
+          </svg>
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="h-6 w-6 cursor-pointer rounded-full text-white hover:bg-gray-200/30"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+            />
+          </svg>
+        )}
+      </button>
+      {visible && (
+        <div
+          ref={setPopper}
+          style={styles.popper}
+          {...attributes.popper}
+          className="bg-white p-1 text-black"
+        >
+          {sessionData ? `Logout ${sessionData.user?.name}` : "Login"}
+        </div>
+      )}
+    </>
   );
 };
