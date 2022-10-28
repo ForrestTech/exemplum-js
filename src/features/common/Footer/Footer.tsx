@@ -2,7 +2,7 @@ export const Footer = () => (
   <div className="container mx-auto items-center justify-center pt-24 text-white">
     <hr />
     <div className="grid grid-cols-4 gap-8 pt-12">
-      <div className="w-full">Exemplum</div>
+      <div className="text-l w-full font-light tracking-[0.5rem]">Exemplum</div>
       <div className="w-full">
         <p>Community</p>
         <ul className="text-emerald-500 underline">
