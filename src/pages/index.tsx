@@ -1,5 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import type { NextPage } from "next";
 import Head from "next/head";
+import Image from "next/image";
 import { trpc } from "../utils/trpc";
 import { OutstandingTasks } from "@features/common/OutstandingTasks/OutstandingTasks";
 import { Welcome } from "@features/common/Welcome/Welcome";
@@ -20,8 +22,8 @@ const Home: NextPage = () => {
       <Head>
         <title>Exemplum JS - Get off to a good start</title>
       </Head>
-      <NavBar />
-      <div className="bg-white dark:bg-neutral-800">
+      <div className="h-full bg-white dark:bg-neutral-800">
+        <NavBar />
         <main className="container mx-auto flex min-h-screen flex-col items-center justify-center  p-4 ">
           <Welcome />
           <OutstandingTasks />

@@ -1,25 +1,65 @@
 import { useState, Fragment } from "react";
+import clsx from "clsx";
 import Link from "next/link";
 import { usePopper } from "react-popper";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { NavMenu } from "../NavMenu/NavMenu";
 
-export const NavBar = () => (
-  <nav className="bg-emerald-500  dark:bg-neutral-900">
-    <div className="container mx-auto flex flex-wrap items-center justify-between p-3">
-      <span className="self-center whitespace-nowrap text-2xl font-light tracking-[0.5rem] text-white">
-        <Link href="/">Exemplum</Link>
-      </span>
-      <div>
-        <SupportDropDown />
-        <span className="border-l-2 border-white" />
-        <NavBarIconList />
-        <LoginControl />
-      </div>
-    </div>
-  </nav>
-);
+export const NavBar = () => {
+  const [sideNavOpen, setSideNavOpen] = useState(false);
+
+  const handleOpenNav = () => {
+    if (sideNavOpen) {
+      setSideNavOpen(false);
+    } else {
+      setSideNavOpen(true);
+    }
+  };
+
+  const handleCloseNav = () => {
+    setSideNavOpen(false);
+  };
+
+  return (
+    <>
+      <nav className="bg-emerald-500  dark:bg-neutral-900">
+        <div className="container mx-auto flex flex-wrap items-center justify-between p-3">
+          <span className="self-center whitespace-nowrap text-2xl font-light tracking-[0.5rem] text-white">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="inline-block h-6 w-6 cursor-pointer text-white"
+              onClick={handleOpenNav}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            </svg>
+            <span className="pl-8">
+              <Link href="/" className="p-4">
+                Exemplum
+              </Link>
+            </span>
+          </span>
+          <div>
+            <SupportDropDown />
+            <span className="border-l-2 border-white" />
+            <NavBarIconList />
+            <LoginControl />
+          </div>
+        </div>
+      </nav>
+      <SlideOutNav sideNavOpen={sideNavOpen} closeSideNav={handleCloseNav} />
+    </>
+  );
+};
 
 const SupportDropDown = () => {
   return (
@@ -59,6 +99,52 @@ const SupportDropDown = () => {
         </Menu.Items>
       </Transition>
     </Menu>
+  );
+};
+
+interface SlideOutNavProps {
+  sideNavOpen: boolean;
+  closeSideNav: () => void;
+}
+
+const SlideOutNav = ({ sideNavOpen, closeSideNav }: SlideOutNavProps) => {
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      closeSideNav();
+    }
+  };
+  return (
+    <>
+      <Transition
+        show={sideNavOpen}
+        enter-class="opacity-0"
+        enter-active-class="ease-out transition-medium"
+        enter-to-class="opacity-100"
+        leave-class="opacity-100"
+        leave-active-class="ease-out transition-medium"
+        leave-to-class="opacity-0"
+      >
+        <div
+          id="nav-menu-overlay"
+          onKeyDown={(e) => handleKeyPress(e)}
+          className="fixed inset-0 z-10 transition-opacity"
+        >
+          <div
+            onClick={() => closeSideNav()}
+            className="absolute inset-0 bg-black opacity-50"
+            tabIndex={0}
+          ></div>
+        </div>
+      </Transition>
+      <aside
+        className={clsx(
+          "fixed top-0 left-0 z-30 h-full w-64 transform overflow-auto bg-white transition-all duration-300 ease-in-out",
+          sideNavOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        <NavMenu />
+      </aside>
+    </>
   );
 };
 
