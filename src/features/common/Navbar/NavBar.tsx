@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePopper } from "react-popper";
@@ -108,11 +108,6 @@ interface SlideOutNavProps {
 }
 
 const SlideOutNav = ({ sideNavOpen, closeSideNav }: SlideOutNavProps) => {
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") {
-      closeSideNav();
-    }
-  };
   return (
     <>
       <Transition
@@ -126,7 +121,6 @@ const SlideOutNav = ({ sideNavOpen, closeSideNav }: SlideOutNavProps) => {
       >
         <div
           id="nav-menu-overlay"
-          onKeyDown={(e) => handleKeyPress(e)}
           className="fixed inset-0 z-10 transition-opacity"
         >
           <div
@@ -156,15 +150,16 @@ const NavBarIconList = () => (
 );
 
 const ColorSchemeToggle = () => {
-  const getIsDarkTheme = () => {
+  const getIsDarkTheme = (): boolean => {
     if (typeof window === "undefined") return false;
 
     if (document.documentElement.classList.contains("dark")) {
       return true;
     }
+    return false;
   };
 
-  const [darkTheme, setDarkTheme] = useState(getIsDarkTheme);
+  const [darkTheme, setDarkTheme] = useState(false);
   const [visible, setVisibility] = useState(false);
   const [reference, setReference] = useState<HTMLButtonElement | null>(null);
   const [popper, setPopper] = useState<HTMLDivElement | null>(null);
@@ -180,6 +175,10 @@ const ColorSchemeToggle = () => {
       },
     ],
   });
+
+  useEffect(() => {
+    setDarkTheme(getIsDarkTheme());
+  }, []);
 
   const handleToggleColorScheme = () => {
     if (typeof window === "undefined") return;
@@ -289,9 +288,9 @@ const GitHubIcon = () => {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="mb-1 ml-2 inline cursor-pointer rounded-full text-white hover:bg-gray-200/30"
           >
             <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
