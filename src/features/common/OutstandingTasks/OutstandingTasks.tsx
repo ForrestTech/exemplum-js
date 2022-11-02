@@ -2,9 +2,9 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>Authentication on pages</li>
-      <li>Weather forecast endpoint</li>
-      <li>Weather forecast page</li>
+      <li>Create a loading wrapper</li>
+      <li>Create table component</li>
+      <li>Create loading wrapper component</li>
       <li>
         Get preview working
         https://vercel.com/docs/concepts/git/vercel-for-github Pull request
@@ -16,7 +16,6 @@ export const OutstandingTasks = () => (
       <li>Vercel analytics @vercel/analytics</li>
       <li>Log rocket integration</li>
       <li>Toast notification integration</li>
-      <li>React table integration</li>
       <li>Ably integration</li>
       <li>Growthbook integration</li>
       <li>Schedule Task Solution</li>

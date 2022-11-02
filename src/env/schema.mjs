@@ -19,6 +19,7 @@ export const serverSchema = z.object({
   ),
   GITHUB_CLIENT_ID: z.string(),
   GITHUB_CLIENT_SECRET: z.string(),
+  OPEN_WEATHER_APP_ID: z.string(),
 });
 
 /**
