@@ -2,9 +2,7 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>Create a loading wrapper</li>
-      <li>Create table component</li>
-      <li>Create loading wrapper component</li>
+      <li>Update readme</li>
       <li>
         Get preview working
         https://vercel.com/docs/concepts/git/vercel-for-github Pull request
@@ -20,6 +18,9 @@ export const OutstandingTasks = () => (
       <li>Growthbook integration</li>
       <li>Schedule Task Solution</li>
       <li>SaaS messaging functions</li>
+      <li>Integrate Polly</li>
+      <li>Loading component add to table</li>
+      <li>Sanity content management integration</li>
     </ul>
   </div>
 );
