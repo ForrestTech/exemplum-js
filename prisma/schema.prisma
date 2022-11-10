@@ -13,6 +13,14 @@ datasource db {
   relationMode = "prisma"
 }
 
+model TodoList {
+  id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(250)
+  color     String   @db.VarChar(250)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt  
+}
+
 model Example {
   id        String   @id @default(cuid())
   name      String   @db.Text

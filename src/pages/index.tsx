@@ -6,14 +6,6 @@ import { Welcome } from "@features/common/Components/Welcome/Welcome";
 import Layout from "@features/common/Components/Layout/Layout";
 
 const Home: NextPage = () => {
-  //const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
-  // const mutation = trpc.example.createExample.useMutation();
-
-  // const handleCreateExample = async () => {
-  //   const name = "Jane Doe";
-  //   mutation.mutate({ name });
-  // };
-
   return (
     <>
       <Head>

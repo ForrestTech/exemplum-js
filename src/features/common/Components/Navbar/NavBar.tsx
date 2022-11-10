@@ -1,11 +1,18 @@
 import { useState, Fragment, useEffect } from "react";
 import clsx from "clsx";
 import Link from "next/link";
-import { usePopper } from "react-popper";
 import { Menu, Transition } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import {
+  ArrowLeftOnRectangleIcon,
+  ArrowRightOnRectangleIcon,
+  Bars3Icon,
+  ChevronDownIcon,
+  MoonIcon,
+  SunIcon,
+} from "@heroicons/react/20/solid";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { NavMenu } from "../NavMenu/NavMenu";
+import Tooltip from "../Tooltip/Tooltip";
 
 export const NavBar = () => {
   const [sideNavOpen, setSideNavOpen] = useState(false);
@@ -27,21 +34,10 @@ export const NavBar = () => {
       <nav className="bg-emerald-500  dark:bg-neutral-900">
         <div className="container mx-auto flex flex-wrap items-center justify-between p-3">
           <span className="self-center whitespace-nowrap text-2xl font-light tracking-[0.5rem] text-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
+            <Bars3Icon
               className="inline-block h-6 w-6 cursor-pointer text-white"
               onClick={handleOpenNav}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-              />
-            </svg>
+            />
             <span className="pl-8">
               <Link href="/" className="p-4">
                 Exemplum
@@ -160,21 +156,6 @@ const ColorSchemeToggle = () => {
   };
 
   const [darkTheme, setDarkTheme] = useState(false);
-  const [visible, setVisibility] = useState(false);
-  const [reference, setReference] = useState<HTMLButtonElement | null>(null);
-  const [popper, setPopper] = useState<HTMLDivElement | null>(null);
-  const { styles, attributes } = usePopper(reference, popper, {
-    placement: "bottom",
-    modifiers: [
-      {
-        name: "offset",
-        enabled: true,
-        options: {
-          offset: [0, 10],
-        },
-      },
-    ],
-  });
 
   useEffect(() => {
     setDarkTheme(getIsDarkTheme());
@@ -196,86 +177,25 @@ const ColorSchemeToggle = () => {
 
   return (
     <>
-      <button
-        type="button"
-        ref={setReference}
-        onMouseEnter={() => setVisibility(true)}
-        onMouseLeave={() => setVisibility(false)}
+      <Tooltip
+        label="Toggle Dark Mode"
         onClick={() => handleToggleColorScheme()}
-        className="pb-1 pl-2 align-middle text-white"
+        className="pb-1 pl-2 align-middle"
       >
         {typeof window !== "undefined" && darkTheme ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6 rounded-full  text-yellow-300 hover:bg-gray-200/30"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
-            />
-          </svg>
+          <SunIcon className="mb-1 ml-2  inline h-6 w-6 rounded-full text-yellow-300 hover:bg-gray-200/30" />
         ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6 rounded-full text-white hover:bg-gray-200/30"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"
-            />
-          </svg>
+          <MoonIcon className="mb-1 ml-2 inline h-6 w-6 rounded-full text-gray-300 hover:bg-gray-200/30" />
         )}
-      </button>
-      {visible && (
-        <div
-          ref={setPopper}
-          style={styles.popper}
-          {...attributes.popper}
-          className="bg-white p-1 text-black"
-        >
-          Toggle Dark Mode
-        </div>
-      )}
+      </Tooltip>
     </>
   );
 };
 
 const GitHubIcon = () => {
-  const [visible, setVisibility] = useState(false);
-  const [reference, setReference] = useState<HTMLButtonElement | null>(null);
-  const [popper, setPopper] = useState<HTMLDivElement | null>(null);
-  const { styles, attributes } = usePopper(reference, popper, {
-    placement: "bottom",
-    modifiers: [
-      {
-        name: "offset",
-        enabled: true,
-        options: {
-          offset: [0, 10],
-        },
-      },
-    ],
-  });
-
   return (
     <>
-      <button
-        type="button"
-        ref={setReference}
-        onMouseEnter={() => setVisibility(true)}
-        onMouseLeave={() => setVisibility(false)}
-        className="pb-1 pl-2 align-middle"
-      >
+      <Tooltip label="Visit Repo" className="pb-1 pl-2 align-middle">
         <a
           href="https://github.com/ForrestTech/exemplum-js"
           target="_blank"
@@ -296,17 +216,7 @@ const GitHubIcon = () => {
             <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
           </svg>
         </a>
-      </button>
-      {visible && (
-        <div
-          ref={setPopper}
-          style={styles.popper}
-          {...attributes.popper}
-          className="bg-white p-1 text-black"
-        >
-          Visit Repo
-        </div>
-      )}
+      </Tooltip>
     </>
   );
 };
@@ -314,74 +224,19 @@ const GitHubIcon = () => {
 const LoginControl = () => {
   const { data: sessionData } = useSession();
 
-  const [visible, setVisibility] = useState(false);
-  const [reference, setReference] = useState<HTMLButtonElement | null>(null);
-  const [popper, setPopper] = useState<HTMLDivElement | null>(null);
-  const { styles, attributes } = usePopper(reference, popper, {
-    placement: "bottom",
-    modifiers: [
-      {
-        name: "offset",
-        enabled: true,
-        options: {
-          offset: [0, 10],
-        },
-      },
-    ],
-  });
-
   return (
     <>
-      <button
-        type="button"
-        ref={setReference}
-        onMouseEnter={() => setVisibility(true)}
-        onMouseLeave={() => setVisibility(false)}
+      <Tooltip
+        label={sessionData ? `Logout ${sessionData.user?.name}` : "Login"}
         onClick={sessionData ? () => signOut() : () => signIn()}
         className="pb-1 pl-2 align-middle"
       >
         {sessionData ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6 cursor-pointer rounded-full text-white hover:bg-gray-200/30"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
-            />
-          </svg>
+          <ArrowRightOnRectangleIcon className="mb-1 ml-2 inline h-6 w-6 cursor-pointer rounded-full text-white hover:bg-gray-200/30" />
         ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6 cursor-pointer rounded-full text-white hover:bg-gray-200/30"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
-            />
-          </svg>
+          <ArrowLeftOnRectangleIcon className="mb-1 ml-2 inline h-6 w-6 cursor-pointer rounded-full text-white hover:bg-gray-200/30" />
         )}
-      </button>
-      {visible && (
-        <div
-          ref={setPopper}
-          style={styles.popper}
-          {...attributes.popper}
-          className="bg-white p-1 text-black"
-        >
-          {sessionData ? `Logout ${sessionData.user?.name}` : "Login"}
-        </div>
-      )}
+      </Tooltip>
     </>
   );
 };
