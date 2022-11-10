@@ -177,15 +177,17 @@ const ColorSchemeToggle = () => {
 
   return (
     <>
-      <Tooltip
-        label="Toggle Dark Mode"
-        onClick={() => handleToggleColorScheme()}
-        className="pb-1 pl-2 align-middle"
-      >
+      <Tooltip label="Toggle Dark Mode" className="pb-1 pl-2 align-middle">
         {typeof window !== "undefined" && darkTheme ? (
-          <SunIcon className="mb-1 ml-2  inline h-6 w-6 rounded-full text-yellow-300 hover:bg-gray-200/30" />
+          <SunIcon
+            className="mb-1 ml-2  inline h-6 w-6 rounded-full text-yellow-300 hover:bg-gray-200/30"
+            onClick={() => handleToggleColorScheme()}
+          />
         ) : (
-          <MoonIcon className="mb-1 ml-2 inline h-6 w-6 rounded-full text-gray-300 hover:bg-gray-200/30" />
+          <MoonIcon
+            className="mb-1 ml-2 inline h-6 w-6 rounded-full text-gray-300 hover:bg-gray-200/30"
+            onClick={() => handleToggleColorScheme()}
+          />
         )}
       </Tooltip>
     </>

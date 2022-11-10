@@ -16,7 +16,41 @@ import {
 import Layout from "@features/common/Components/Layout/Layout";
 import LoadingWrapper from "@features/common/Components/LoadingWrapper/LoadingWrapper";
 import Tooltip from "@features/common/Components/Tooltip/Tooltip";
-import Input from "@features/common/Components/Forms/Input/Input";
+import AddTodoListsForm from "@features/Todo/AddTodoListsForm/AddTodoListsForm";
+
+const Lists: NextPage = () => {
+  const { data, isLoading, error } = trpc.todoLists.all.useQuery();
+
+  return (
+    <>
+      <Head>
+        <title>Todo Lists</title>
+      </Head>
+      <Layout>
+        <div className="flex flex-col justify-center p-8">
+          <h1 className="mb-8 text-4xl dark:text-white">Todo Lists</h1>
+          <div className="p-4"></div>
+          <AddTodoListsForm />
+          <div className="p-4"></div>
+          <LoadingWrapper data={data} isLoading={isLoading} error={error}>
+            {data && <TodoLists todoLists={data} />}
+          </LoadingWrapper>
+        </div>
+      </Layout>
+    </>
+  );
+};
+
+const TodoLists = ({ todoLists }: { todoLists: TodoList[] }) => {
+  return (
+    <div>
+      {todoLists &&
+        todoLists.map((list) => (
+          <TodoListEntry key={list.id} todoList={list} />
+        ))}
+    </div>
+  );
+};
 
 const TodoListEntry = ({ todoList }: { todoList: TodoList }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -74,7 +108,8 @@ const TodoListEntry = ({ todoList }: { todoList: TodoList }) => {
     <div className="mt-2 flex w-1/2 p-8 shadow-md dark:bg-slate-700">
       {editMode ? (
         <>
-          <Input
+          <input
+            className="focus:shadow-outline w-96 appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
             autoFocus
             id="title"
             type="text"
@@ -123,38 +158,6 @@ const TodoListEntry = ({ todoList }: { todoList: TodoList }) => {
         </>
       )}
     </div>
-  );
-};
-
-const TodoLists = ({ todoLists }: { todoLists: TodoList[] }) => {
-  return (
-    <div>
-      {todoLists &&
-        todoLists.map((list) => (
-          <TodoListEntry key={list.id} todoList={list} />
-        ))}
-    </div>
-  );
-};
-
-const Lists: NextPage = () => {
-  const { data, isLoading, error } = trpc.todoLists.all.useQuery();
-
-  return (
-    <>
-      <Head>
-        <title>Todo Lists</title>
-      </Head>
-      <Layout>
-        <div className="flex flex-col justify-center p-8">
-          <h1 className="mb-8 text-4xl dark:text-white">Todo Lists</h1>
-          <div className="p-8"></div>
-          <LoadingWrapper data={data} isLoading={isLoading} error={error}>
-            {data && <TodoLists todoLists={data} />}
-          </LoadingWrapper>
-        </div>
-      </Layout>
-    </>
   );
 };
 
