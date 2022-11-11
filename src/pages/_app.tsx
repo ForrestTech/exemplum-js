@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
 import type { AppType } from "next/app";
 import { trpc } from "../utils/trpc";
+import { Toaster } from "react-hot-toast";
 
 import LogRocket from "logrocket";
 import setupLogRocketReact from "logrocket-react";
@@ -20,6 +21,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
+      <div>
+        <Toaster />
+      </div>
       <Component {...pageProps} />
     </SessionProvider>
   );

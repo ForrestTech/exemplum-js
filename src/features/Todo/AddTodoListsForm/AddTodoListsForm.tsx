@@ -1,6 +1,7 @@
 import { trpc } from "utils/trpc";
 import { useZodForm } from "@features/common/Components/Forms/Input/Form/Form";
 import { schema } from "../todolist";
+import toast from "react-hot-toast";
 
 interface AddTodoListsForm {
   title: string;
@@ -33,6 +34,7 @@ const AddTodoListsForm = () => {
       onSubmit={handleSubmit(async (values) => {
         await addTodoList.mutateAsync(values);
         reset();
+        toast.success("Todo list added");
       })}
     >
       <div className="grid max-w-xl grid-cols-3 items-center gap-4 border-b border-teal-500 py-2">

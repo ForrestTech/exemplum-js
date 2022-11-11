@@ -2,7 +2,6 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>Toast notification integration</li>
       <li>Task API</li>
       <li>enum helpers for typescript (priority level)</li>
       <li>
@@ -16,6 +15,7 @@ export const OutstandingTasks = () => (
         encapsulation of domain logic full stack (cant schedule a task due date
         for the same hour)
       </li>
+      <li>Task UI</li>
       <li>Server side logging</li>
       <li>Log rocket integration</li>
       <li>SQL error translation</li>
