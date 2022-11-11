@@ -1,23 +1,14 @@
 import { router, protectedProcedure } from "../trpc";
 import { z } from "zod";
-import { validColor } from "@features/Todo/todolist";
+import { schema, updateTodoListSchema } from "@features/Todo/todolist";
 
 export const todoListsRouter = router({
-  create: protectedProcedure
-    .input(
-      z.object({
-        title: z.string(),
-        color: z.string().refine((color) => validColor(color), {
-          message: "Color must be a valid hex color",
-        }),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const newTodoList = await ctx.prisma.todoList.create({
-        data: input,
-      });
-      return newTodoList;
-    }),
+  create: protectedProcedure.input(schema).mutation(async ({ ctx, input }) => {
+    const newTodoList = await ctx.prisma.todoList.create({
+      data: input,
+    });
+    return newTodoList;
+  }),
   all: protectedProcedure.query(async ({ ctx }) => {
     const todoLists = await ctx.prisma.todoList.findMany();
     return todoLists;
@@ -29,7 +20,7 @@ export const todoListsRouter = router({
     return todoList;
   }),
   update: protectedProcedure
-    .input(z.object({ id: z.number(), title: z.string(), color: z.string() }))
+    .input(updateTodoListSchema)
     .mutation(async ({ ctx, input }) => {
       const todoList = await ctx.prisma.todoList.update({
         where: { id: input.id },

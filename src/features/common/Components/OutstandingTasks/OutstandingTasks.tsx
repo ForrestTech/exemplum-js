@@ -2,10 +2,6 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>
-        Create a zod form helper
-        https://kitchen-sink.trpc.io/react-hook-form?file=feature%2Freact-hook-form%2Findex.tsx#content
-      </li>
       <li>Single schema validation</li>
       <li>Basic form validation front and backend zod</li>
       <li>Toast notification integration</li>
