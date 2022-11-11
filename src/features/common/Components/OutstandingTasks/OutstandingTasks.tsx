@@ -2,8 +2,6 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>Single schema validation</li>
-      <li>Basic form validation front and backend zod</li>
       <li>Toast notification integration</li>
       <li>Task API</li>
       <li>enum helpers for typescript (priority level)</li>

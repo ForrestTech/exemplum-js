@@ -97,7 +97,9 @@ const TodoListEntry = ({ todoList }: { todoList: TodoList }) => {
   };
 
   const handleDelete = (listToDelete: TodoList) => {
-    deleteToDo.mutate(listToDelete.id);
+    if (confirm("Are you sure you want to delete this list?") === true) {
+      deleteToDo.mutate(listToDelete.id);
+    }
   };
 
   const handleCancel = () => {
