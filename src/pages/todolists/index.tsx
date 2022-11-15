@@ -46,7 +46,7 @@ const TodoLists = ({ todoLists }: { todoLists: TodoList[] }) => {
     <div>
       {todoLists &&
         todoLists.map((list) => (
-          <TodoListEntry key={list.id} todoList={list} />
+          <TodoListEntry key={list.id.toString()} todoList={list} />
         ))}
     </div>
   );
@@ -59,7 +59,7 @@ const TodoListEntry = ({ todoList }: { todoList: TodoList }) => {
   const utils = trpc.useContext();
   const updateTodo = trpc.todoLists.update.useMutation({
     onSuccess: (input) => {
-      utils.todoLists.list.invalidate(input.id);
+      utils.todoLists.single.invalidate(input.id);
     },
   });
   const deleteToDo = trpc.todoLists.delete.useMutation({

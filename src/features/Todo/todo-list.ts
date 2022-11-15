@@ -11,7 +11,7 @@ export const schema = z.object({
 });
 
 export const entity = z.object({
-  id: z.number(),
+  id: z.bigint(),
 });
 
 export const updateTodoListSchema = z.intersection(schema, entity);

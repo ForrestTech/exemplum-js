@@ -1,6 +1,6 @@
 import { trpc } from "utils/trpc";
 import { useZodForm } from "@features/common/Components/Forms/Input/Form/Form";
-import { schema } from "../todolist";
+import { schema } from "../todo-list";
 import toast from "react-hot-toast";
 
 interface AddTodoListsForm {

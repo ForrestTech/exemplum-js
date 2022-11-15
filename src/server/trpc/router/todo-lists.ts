@@ -1,6 +1,6 @@
 import { router, protectedProcedure } from "../trpc";
 import { z } from "zod";
-import { schema, updateTodoListSchema } from "@features/Todo/todolist";
+import { schema, updateTodoListSchema } from "@features/Todo/todo-list";
 
 export const todoListsRouter = router({
   create: protectedProcedure.input(schema).mutation(async ({ ctx, input }) => {
@@ -13,7 +13,7 @@ export const todoListsRouter = router({
     const todoLists = await ctx.prisma.todoList.findMany();
     return todoLists;
   }),
-  list: protectedProcedure.input(z.number()).query(async ({ ctx, input }) => {
+  single: protectedProcedure.input(z.bigint()).query(async ({ ctx, input }) => {
     const todoList = await ctx.prisma.todoList.findUnique({
       where: { id: input },
     });
@@ -29,7 +29,7 @@ export const todoListsRouter = router({
       return todoList;
     }),
   delete: protectedProcedure
-    .input(z.number())
+    .input(z.bigint())
     .mutation(async ({ ctx, input }) => {
       const todoList = await ctx.prisma.todoList.delete({
         where: { id: input },

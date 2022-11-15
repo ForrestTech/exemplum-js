@@ -3,19 +3,23 @@ export const OutstandingTasks = () => (
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
       <li>Task API</li>
-      <li>enum helpers for typescript (priority level)</li>
+      <li>Task UI</li>
       <li>
-        Custom error message and default response object (problem details)
+        Set priority level feature: enum helpers for typescript (priority level)
+      </li>
+      <li>
+        Unique constraint error on title: Custom error message and default
+        response object (problem details)
+      </li>
+      <li>Changes to priority effect the reminder time</li>
+      <li>
+        encapsulation of domain logic full stack (cant schedule a task due date
+        for the same hour)
       </li>
       <li>
         Add aggregate function query example (count of tasks by priority level)
       </li>
       <li>collection helpers for typescript</li>
-      <li>
-        encapsulation of domain logic full stack (cant schedule a task due date
-        for the same hour)
-      </li>
-      <li>Task UI</li>
       <li>Server side logging</li>
       <li>Log rocket integration</li>
       <li>SQL error translation</li>
@@ -27,7 +31,12 @@ export const OutstandingTasks = () => (
       <li>
         Domain events (some infrastructure for pushing events and subscribing)
       </li>
+      <li>Add repeat task feature</li>
       <li>Ably integration</li>
+      <li>
+        Add attachment integrations, so we can upload file and have an example
+        of file storage
+      </li>
       <li>Unit tests</li>
       <li>Smoke tests</li>
       <li>Vercel analytics @vercel/analytics</li>
