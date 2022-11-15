@@ -28,13 +28,17 @@ const Lists: NextPage = () => {
     data: todoItems,
     isLoading: itemsLoading,
     error: itemsError,
-  } = trpc.todoItems.inList.useQuery(listIdBI);
+  } = trpc.todoItems.inList.useQuery(listIdBI, {
+    queryKeyHashFn: () => listIdBI.toString(),
+  });
 
   const {
     data: list,
     isLoading: listLoading,
     error: listError,
-  } = trpc.todoLists.single.useQuery(listIdBI);
+  } = trpc.todoLists.single.useQuery(listIdBI, {
+    queryKeyHashFn: () => listIdBI.toString(),
+  });
 
   return (
     <>

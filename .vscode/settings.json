@@ -12,8 +12,7 @@
       "driver": "CockroachDB",
       "name": "exemplum-dev-main",
       "database": "exemplum",
-      "username": "exemplum-dev",
-      "connectString": "postgresql://exemplum-dev:4XdqZAw6B0y2iTLhY9P4gQ@free-tier6.gcp-asia-southeast1.cockroachlabs.cloud:26257/exemplum?sslmode=verify-full&options=--cluster%3Dexemplum-dev-main-3574"
+      "username": "exemplum-dev"
     }
   ]
 }
