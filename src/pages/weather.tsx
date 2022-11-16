@@ -4,7 +4,7 @@ import Head from "next/head";
 import { withAuthRequired } from "@features/common/withAuth";
 import { trpc } from "utils/trpc";
 import { createColumnHelper } from "@tanstack/react-table";
-import { Weather } from "server/trpc/router/weather";
+import { Weather } from "server/trpc/router/weatherEndpoint";
 
 import Layout from "@features/common/Components/Layout/Layout";
 import LoadingWrapper from "@features/common/Components/LoadingWrapper/LoadingWrapper";

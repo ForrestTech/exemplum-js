@@ -14,6 +14,7 @@ import {
   TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/20/solid";
+import AddTodoListItemForm from "@features/Todo/AddTodoListItemForm/AddTodoListItemForm";
 
 const Lists: NextPage = () => {
   const router = useRouter();
@@ -29,7 +30,9 @@ const Lists: NextPage = () => {
     isLoading: itemsLoading,
     error: itemsError,
   } = trpc.todoItems.inList.useQuery(listIdBI, {
-    queryKeyHashFn: () => listIdBI.toString(),
+    queryKeyHashFn: () => {
+      return "todoItems.inList." + listIdBI.toString();
+    },
   });
 
   const {
@@ -37,7 +40,9 @@ const Lists: NextPage = () => {
     isLoading: listLoading,
     error: listError,
   } = trpc.todoLists.single.useQuery(listIdBI, {
-    queryKeyHashFn: () => listIdBI.toString(),
+    queryKeyHashFn: () => {
+      return "todoLists.single." + listIdBI.toString();
+    },
   });
 
   return (
@@ -58,7 +63,7 @@ const Lists: NextPage = () => {
             </LoadingWrapper>
           </h2>
           <div className="p-4"></div>
-          {/* <AddTodoListItemForm /> */}
+          <AddTodoListItemForm todoListId={listIdBI} />
           <div className="p-4"></div>
           <LoadingWrapper
             data={todoItems}

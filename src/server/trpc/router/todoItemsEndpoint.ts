@@ -1,15 +1,10 @@
 import { router, protectedProcedure } from "../trpc";
 import { z } from "zod";
+import { createTodoItemSchema } from "@features/Todo/todoItems";
 
 export const todoItemRouter = router({
   create: protectedProcedure
-    .input(
-      z.object({
-        title: z.string().min(3, { message: "Title is required" }).max(255),
-        notes: z.string().optional(),
-        todoListId: z.number(),
-      })
-    )
+    .input(createTodoItemSchema)
     .mutation(async ({ ctx, input }) => {
       const newTodoItem = await ctx.prisma.todoItem.create({
         data: input,
@@ -27,6 +22,7 @@ export const todoItemRouter = router({
     return todoList;
   }),
   inList: protectedProcedure.input(z.bigint()).query(async ({ ctx, input }) => {
+    console.log("in list", input);
     const todoList = await ctx.prisma.todoItem.findMany({
       where: { todoListId: input },
     });

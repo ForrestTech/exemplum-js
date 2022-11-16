@@ -4,6 +4,7 @@ export const OutstandingTasks = () => (
     <ul className="dark:text-white">
       <li>Task API</li>
       <li>Task UI</li>
+      <li>Task UI full edit mode, edit column</li>
       <li>
         Set priority level feature: enum helpers for typescript (priority level)
       </li>
