@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { ChangeEvent, useState } from "react";
 import { trpc } from "utils/trpc";
 import { TodoItem } from "@prisma/client";
+import toast from "react-hot-toast";
+import clsx from "clsx";
 import Layout from "@features/common/Components/Layout/Layout";
 import LoadingWrapper from "@features/common/Components/LoadingWrapper/LoadingWrapper";
 import Tooltip from "@features/common/Components/Tooltip/Tooltip";
@@ -14,7 +16,7 @@ import {
   TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/20/solid";
-import AddTodoListItemForm from "@features/Todo/AddTodoListItemForm/AddTodoListItemForm";
+import AddTodoItemForm from "@features/Todo/AddTodoListItemForm/AddTodotemForm";
 
 const Lists: NextPage = () => {
   const router = useRouter();
@@ -53,7 +55,7 @@ const Lists: NextPage = () => {
       <Layout>
         <div className="flex flex-col justify-center p-8">
           <h1 className="mb-8 text-4xl dark:text-white">Todo Lists</h1>
-          <h2 className="mb-8 text-4xl dark:text-white">
+          <h2 className="mb-8 text-2xl dark:text-white">
             <LoadingWrapper
               data={list}
               isLoading={listLoading}
@@ -63,7 +65,7 @@ const Lists: NextPage = () => {
             </LoadingWrapper>
           </h2>
           <div className="p-4"></div>
-          <AddTodoListItemForm todoListId={listIdBI} />
+          <AddTodoItemForm todoListId={listIdBI} />
           <div className="p-4"></div>
           <LoadingWrapper
             data={todoItems}
@@ -95,17 +97,24 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
   const utils = trpc.useContext();
   const updateTodo = trpc.todoItems.update.useMutation({
     onSuccess: (input) => {
-      utils.todoLists.single.invalidate(input.id);
+      utils.todoItems.inList.invalidate(input.id);
+    },
+  });
+  const markComplete = trpc.todoItems.markComplete.useMutation({
+    onSuccess: (input) => {
+      utils.todoItems.inList.invalidate(input.id);
     },
   });
   const deleteToDo = trpc.todoItems.delete.useMutation({
-    onSuccess: () => {
-      utils.todoLists.all.invalidate();
+    onSuccess: (input) => {
+      utils.todoItems.inList.invalidate(input.id);
     },
   });
 
   const handleEdit = () => {
-    setEditMode(true);
+    if (!complete) {
+      setEditMode(true);
+    }
   };
 
   const handleKeyPress = async (
@@ -125,9 +134,7 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
   const handleSave = (itemToSave: TodoItem) => {
     const updated = itemToSave;
     updated.title = title;
-    updated.isComplete = complete;
 
-    //save to api
     updateTodo.mutate(updated);
 
     setEditMode(false);
@@ -138,79 +145,92 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
     event: ChangeEvent<HTMLInputElement>
   ) => {
     setComplete(event.currentTarget.checked);
-    handleSave(itemToComplete);
+    markComplete.mutate(itemToComplete.id);
   };
 
   const handleDelete = (itemToDelete: TodoItem) => {
     deleteToDo.mutate(itemToDelete.id);
+    toast.error("Item deleted");
   };
 
   const handleCancel = () => {
     setEditMode(false);
   };
 
-  return editMode ? (
+  return (
     <div className="mt-2 flex w-1/2 p-8 shadow-md dark:bg-slate-700">
-      <input
-        className="focus:shadow-outline w-96 appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-        autoFocus
-        id="title"
-        type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(event) => handleChange(event)}
-        onKeyPress={(event) => handleKeyPress(event, item)}
-      />
-      <span className="grow" />
-      <Tooltip label="Save">
-        <CheckIcon
-          onClick={() => handleSave(item)}
-          className="h-6 w-6 cursor-pointer dark:text-white"
-        />
-      </Tooltip>
-      <Tooltip label="Cancel">
-        <XMarkIcon
-          onClick={() => handleCancel()}
-          className="ml-2 h-6 w-6 cursor-pointer dark:text-white"
-        />
-      </Tooltip>
-    </div>
-  ) : (
-    <div className="mt-4">
-      <span>{item.title}</span>
-      <span className="grow" />
-      <Tooltip label="Edit">
-        <PencilIcon
-          onClick={() => handleEdit()}
-          className="ml-2 h-6 w-6 cursor-pointer dark:text-white"
-        />
-      </Tooltip>
-      <Tooltip label="Mark as done">
-        <label
-          htmlFor="default-toggle"
-          className="relative inline-flex cursor-pointer items-center"
-        >
+      {editMode ? (
+        <>
           <input
-            type="checkbox"
-            onChange={(event) => {
-              handleCompleted(item, event);
-            }}
-            checked={complete}
-            id="default-toggle"
-            className="peer sr-only"
-          ></input>
-          <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
-          <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-            Mark as done
-          </span>
-        </label>
-      </Tooltip>
-      <Tooltip label="Delete">
-        <TrashIcon
-          onClick={() => handleDelete(item)}
-          className="ml-2 h-6 w-6 cursor-pointer dark:text-white"
-        />
-      </Tooltip>
+            className="focus:shadow-outline w-96 appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+            autoFocus
+            id="title"
+            type="text"
+            placeholder="Title"
+            value={title}
+            onChange={(event) => handleChange(event)}
+            onKeyPress={(event) => handleKeyPress(event, item)}
+          />
+          <span className="grow" />
+          <Tooltip label="Save">
+            <CheckIcon
+              onClick={() => handleSave(item)}
+              className="h-6 w-6 cursor-pointer dark:text-white"
+            />
+          </Tooltip>
+          <Tooltip label="Cancel">
+            <XMarkIcon
+              onClick={() => handleCancel()}
+              className="ml-2 h-6 w-6 cursor-pointer dark:text-white"
+            />
+          </Tooltip>
+        </>
+      ) : (
+        <>
+          {item.isComplete ? (
+            <span className="inline line-through dark:text-white">
+              {item.title}
+            </span>
+          ) : (
+            <span className="inline dark:text-white">{item.title}</span>
+          )}
+          <span className="grow" />
+          <Tooltip label={!complete ? "Edit" : "Cant edit completed item"}>
+            <PencilIcon
+              onClick={() => handleEdit()}
+              className={clsx(
+                "ml-2 h-6 w-6 cursor-pointer",
+                complete
+                  ? "text-gray-200 dark:text-gray-400"
+                  : "text-black dark:text-white"
+              )}
+            />
+          </Tooltip>
+          <Tooltip label="Mark as done">
+            <label
+              htmlFor="default-toggle"
+              className="relative ml-2 inline-flex cursor-pointer items-center"
+            >
+              <input
+                type="checkbox"
+                onChange={(event) => {
+                  handleCompleted(item, event);
+                }}
+                checked={complete}
+                id="default-toggle"
+                className="peer sr-only"
+              ></input>
+              <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-emerald-500 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 dark:border-gray-600 dark:bg-gray-400 dark:peer-focus:ring-emerald-800"></div>
+            </label>
+          </Tooltip>
+          <Tooltip label="Delete">
+            <TrashIcon
+              onClick={() => handleDelete(item)}
+              className="ml-2 h-6 w-6 cursor-pointer dark:text-white"
+            />
+          </Tooltip>
+        </>
+      )}
     </div>
   );
 };
