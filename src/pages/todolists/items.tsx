@@ -53,27 +53,32 @@ const Lists: NextPage = () => {
         <title>Todo Lists</title>
       </Head>
       <Layout>
-        <div className="flex flex-col justify-center p-8">
-          <h1 className="mb-8 text-4xl dark:text-white">Todo Lists</h1>
-          <h2 className="mb-8 text-2xl dark:text-white">
+        <div className="gp-8 flex p-8">
+          <div className="grow">
+            <h1 className="mb-8 text-4xl dark:text-white">Todo Lists</h1>
+            <h2 className="mb-8 text-2xl dark:text-white">
+              <LoadingWrapper
+                data={list}
+                isLoading={listLoading}
+                error={listError}
+              >
+                {list?.title}
+              </LoadingWrapper>
+            </h2>
+            <div className="p-4"></div>
+            <AddTodoItemForm todoListId={listIdBI} />
+            <div className="p-4"></div>
             <LoadingWrapper
-              data={list}
-              isLoading={listLoading}
-              error={listError}
+              data={todoItems}
+              isLoading={itemsLoading}
+              error={itemsError}
             >
-              {list?.title}
+              {todoItems && <TodoListsItems todoItem={todoItems} />}
             </LoadingWrapper>
-          </h2>
-          <div className="p-4"></div>
-          <AddTodoItemForm todoListId={listIdBI} />
-          <div className="p-4"></div>
-          <LoadingWrapper
-            data={todoItems}
-            isLoading={itemsLoading}
-            error={itemsError}
-          >
-            {todoItems && <TodoListsItems todoItem={todoItems} />}
-          </LoadingWrapper>
+          </div>
+          <div className="w-32">
+            <h1 className="dark:text-white">Sidebar</h1>
+          </div>
         </div>
       </Layout>
     </>
@@ -158,7 +163,7 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
   };
 
   return (
-    <div className="mt-2 flex w-1/2 p-8 shadow-md dark:bg-slate-700">
+    <div className="mt-2 flex max-w-xl p-8 shadow-md hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600">
       {editMode ? (
         <>
           <input

@@ -3,7 +3,7 @@ export const OutstandingTasks = () => (
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
       <li>Check DB setting verecel</li>
-      <li>Task UI full edit mode, edit column</li>
+      <li>Test migrating to toastify</li>
       <li>
         Set priority level feature: enum helpers for typescript (priority level)
       </li>
