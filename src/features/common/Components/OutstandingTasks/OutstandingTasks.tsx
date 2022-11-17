@@ -2,10 +2,7 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>Test migrating to toastify</li>
-      <li>
-        Set priority level feature: enum helpers for typescript (priority level)
-      </li>
+      <li>Add side bar UI to set priority level</li>
       <li>
         Unique constraint error on title: Custom error message and default
         response object (problem details)

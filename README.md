@@ -19,3 +19,7 @@ This is a template for creating an example of good practice for modern Typescrip
 - [Prisma](https://prisma.io)
 - [TailwindCSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
+
+## Patterns
+
+Domain logic and validation logic can be shared between the client and server. This common logic is stored in a features folder where code is grouped by domain feature not code type. As long as all the code stored in here are pure functions then its fine to share between client and server

@@ -3,7 +3,7 @@ import { router } from "../trpc";
 import { authRouter } from "./auth";
 import { weatherRouter } from "./weatherEndpoint";
 import { todoListsRouter } from "./todoListEndpoint";
-import { todoItemRouter } from "./todoItemsEndpoint";
+import { todoItemRouter } from "./todoItemEndpoint";
 
 export const appRouter = router({
   weather: weatherRouter,

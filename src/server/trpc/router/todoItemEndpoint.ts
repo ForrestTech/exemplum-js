@@ -1,6 +1,10 @@
 import { router, protectedProcedure } from "../trpc";
 import { z } from "zod";
-import { createTodoItemSchema } from "@features/Todo/todoItems";
+import {
+  createTodoItemSchema,
+  updatePriorityLevelHandler,
+} from "@features/Todo/todoItems";
+import { PriorityLevel } from "@prisma/client";
 
 export const todoItemRouter = router({
   create: protectedProcedure
@@ -40,6 +44,18 @@ export const todoItemRouter = router({
       const todoItem = await ctx.prisma.todoItem.update({
         where: { id: input.id },
         data: input,
+      });
+      return todoItem;
+    }),
+  setPriority: protectedProcedure
+    .input(
+      z.object({ id: z.bigint(), priorityLevel: z.nativeEnum(PriorityLevel) })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const data = updatePriorityLevelHandler(input.priorityLevel, new Date());
+      const todoItem = await ctx.prisma.todoItem.update({
+        where: { id: input.id },
+        data: data,
       });
       return todoItem;
     }),
