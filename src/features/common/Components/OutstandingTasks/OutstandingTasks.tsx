@@ -7,7 +7,6 @@ export const OutstandingTasks = () => (
         Unique constraint error on title: Custom error message and default
         response object (problem details)
       </li>
-      <li>Changes to priority effect the reminder time</li>
       <li>
         encapsulation of domain logic full stack (cant schedule a task due date
         for the same hour)

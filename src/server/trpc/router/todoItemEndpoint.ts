@@ -16,21 +16,21 @@ export const todoItemRouter = router({
       return newTodoItem;
     }),
   all: protectedProcedure.query(async ({ ctx }) => {
-    const todoLists = await ctx.prisma.todoItem.findMany();
-    return todoLists;
+    const todoItem = await ctx.prisma.todoItem.findMany();
+    return todoItem;
   }),
   single: protectedProcedure.input(z.bigint()).query(async ({ ctx, input }) => {
-    const todoList = await ctx.prisma.todoItem.findUnique({
+    const todoItem = await ctx.prisma.todoItem.findUnique({
       where: { id: input },
     });
-    return todoList;
+    return todoItem;
   }),
   inList: protectedProcedure.input(z.bigint()).query(async ({ ctx, input }) => {
     console.log("in list", input);
-    const todoList = await ctx.prisma.todoItem.findMany({
+    const todoItem = await ctx.prisma.todoItem.findMany({
       where: { todoListId: input },
     });
-    return todoList;
+    return todoItem;
   }),
   update: protectedProcedure
     .input(
@@ -67,14 +67,22 @@ export const todoItemRouter = router({
       });
       return todoList;
     }),
-  markComplete: protectedProcedure
+  toggleComplete: protectedProcedure
     .input(z.bigint())
     .mutation(async ({ ctx, input }) => {
-      //possible business logic here
-      const todoList = await ctx.prisma.todoItem.update({
+      const todoItem = await ctx.prisma.todoItem.findUnique({
         where: { id: input },
-        data: { isComplete: true, completedAt: new Date() },
       });
-      return todoList;
+
+      if (todoItem) {
+        const updatedItem = await ctx.prisma.todoItem.update({
+          where: { id: input },
+          data: {
+            isComplete: !todoItem.isComplete,
+            completedAt: todoItem.isComplete ? null : new Date(),
+          },
+        });
+        return updatedItem;
+      }
     }),
 });
