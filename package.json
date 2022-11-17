@@ -37,6 +37,7 @@
     "react-hot-toast": "^2.4.0",
     "react-popper": "^2.3.0",
     "superjson": "1.11.0",
+    "tailwind-datepicker-react": "^1.2.3",
     "ts-pattern": "^4.0.6",
     "zod": "^3.19.1"
   },

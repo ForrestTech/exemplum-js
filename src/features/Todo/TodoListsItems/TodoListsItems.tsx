@@ -1,7 +1,6 @@
 import { TodoItem } from "@prisma/client";
 import { atom, useAtom } from "jotai";
 import { ChangeEvent, useMemo, useState } from "react";
-
 import {
   CheckIcon,
   PencilIcon,
@@ -12,6 +11,8 @@ import { trpc } from "utils/trpc";
 import toast from "react-hot-toast";
 import clsx from "clsx";
 import Tooltip from "@features/common/Components/Tooltip/Tooltip";
+import Datepicker from "tailwind-datepicker-react";
+import dayjs from "dayjs";
 
 const claimEditModeAtom = atom<TodoItem | undefined>(undefined);
 
@@ -94,6 +95,17 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
     return claimEditTodo?.id === item.id;
   }, [claimEditTodo, item.id]);
 
+  const [showDueDate, setShowDueDate] = useState(false);
+  const [showReminderDate, setShowReminderDate] = useState(false);
+
+  const handleChangeDueDate = (selectedDate: Date) => {
+    console.log(selectedDate);
+  };
+
+  const handleChangeReminderDate = (selectedDate: Date) => {
+    console.log(selectedDate);
+  };
+
   return (
     <div className="grid-row-2 mt-2 grid max-w-xl">
       <div
@@ -115,18 +127,16 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
               onKeyPress={(event) => handleKeyPress(event, item)}
             />
             <span className="grow" />
-            <Tooltip label="Save">
-              <CheckIcon
-                onClick={() => handleSave(item)}
-                className="h-6 w-6 cursor-pointer dark:text-white"
-              />
-            </Tooltip>
-            <Tooltip label="Cancel">
-              <XMarkIcon
-                onClick={() => handleCancel()}
-                className="ml-2 h-6 w-6 cursor-pointer dark:text-white"
-              />
-            </Tooltip>
+            <CheckIcon
+              title="Save"
+              onClick={() => handleSave(item)}
+              className="h-6 w-6 cursor-pointer dark:text-white"
+            />
+            <XMarkIcon
+              title="Cancel"
+              onClick={() => handleCancel()}
+              className="ml-2 h-6 w-6 cursor-pointer dark:text-white"
+            />
           </>
         ) : (
           <>
@@ -139,50 +149,86 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
               {item.title}
             </span>
             <span className="grow" />
-            <Tooltip label={!complete ? "Edit" : "Cant edit completed item"}>
-              <PencilIcon
-                onClick={() => handleEdit()}
-                className={clsx(
-                  "ml-2 h-6 w-6 cursor-pointer",
-                  complete
-                    ? "text-gray-200 dark:text-gray-400"
-                    : "text-black dark:text-white"
-                )}
-              />
-            </Tooltip>
-            <Tooltip label="Mark as done">
-              <label
-                htmlFor="default-toggle"
-                className="relative ml-2 inline-flex cursor-pointer items-center"
-              >
-                <input
-                  type="checkbox"
-                  onChange={(event) => {
-                    handleCompleted(item, event);
-                  }}
-                  checked={complete}
-                  id="default-toggle"
-                  className="peer sr-only"
-                ></input>
-                <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-emerald-500 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 dark:border-gray-600 dark:bg-gray-400 dark:peer-focus:ring-emerald-800"></div>
-              </label>
-            </Tooltip>
-            <Tooltip label="Delete">
-              <TrashIcon
-                onClick={() => handleDelete(item)}
-                className="ml-2 h-6 w-6 cursor-pointer dark:text-white"
-              />
-            </Tooltip>
+            <PencilIcon
+              title={!complete ? "Edit" : "Cant edit completed item"}
+              onClick={() => handleEdit()}
+              className={clsx(
+                "ml-2 h-6 w-6 cursor-pointer",
+                complete
+                  ? "text-gray-200 dark:text-gray-400"
+                  : "text-black dark:text-white"
+              )}
+            />
+            <label
+              htmlFor="default-toggle"
+              className="relative ml-2 inline-flex cursor-pointer items-center"
+              title="Mark as done"
+            >
+              <input
+                type="checkbox"
+                onChange={(event) => {
+                  handleCompleted(item, event);
+                }}
+                checked={complete}
+                id="default-toggle"
+                className="peer sr-only"
+              ></input>
+              <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-emerald-500 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 dark:border-gray-600 dark:bg-gray-400 dark:peer-focus:ring-emerald-800"></div>
+            </label>
+            <TrashIcon
+              title="Delete"
+              onClick={() => handleDelete(item)}
+              className="ml-2 h-6 w-6 cursor-pointer dark:text-white"
+            />
           </>
         )}
       </div>
       <div
         className={clsx(
           !isEditMode && "hidden",
-          "flex max-w-xl p-4  hover:bg-gray-100 dark:bg-slate-800"
+          "flex max-w-xl p-4 hover:bg-gray-100 dark:bg-slate-800"
         )}
       >
-        <h3 className="dark:text-white">Edit pane</h3>
+        <div className="relative w-44">
+          <label
+            htmlFor="date"
+            className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
+          >
+            Due Date
+          </label>
+          <Datepicker
+            options={{
+              title: "Due Date",
+              autoHide: true,
+              todayBtn: false,
+              clearBtn: true,
+              datepickerClassNames: "top-15",
+            }}
+            onChange={handleChangeDueDate}
+            show={showDueDate}
+            setShow={(state: boolean) => setShowDueDate(state)}
+          />
+        </div>
+        <div className="relative w-44 pl-4">
+          <label
+            htmlFor="date"
+            className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
+          >
+            Reminder Date
+          </label>
+          <Datepicker
+            options={{
+              title: "Reminder Date",
+              autoHide: true,
+              todayBtn: false,
+              clearBtn: true,
+              datepickerClassNames: "top-15",
+            }}
+            onChange={handleChangeReminderDate}
+            show={showReminderDate}
+            setShow={(state: boolean) => setShowReminderDate(state)}
+          />
+        </div>
       </div>
     </div>
   );

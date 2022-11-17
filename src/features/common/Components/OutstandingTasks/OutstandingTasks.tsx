@@ -2,14 +2,22 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>Add side bar UI to set priority level</li>
+      <li>Set due date</li>
+      <li>Set reminder date</li>
+      <li>Set priority level</li>
+      <li>Separate out edit bar section</li>
       <li>
-        Unique constraint error on title: Custom error message and default
-        response object (problem details)
+        Set tailwind color variables
+        https://www.youtube.com/watch?v=T-Zv73yZ_QI&t=339s
       </li>
+      <li>Use cva for my buttons react-cva</li>
       <li>
         encapsulation of domain logic full stack (cant schedule a task due date
         for the same hour)
+      </li>
+      <li>
+        Unique constraint error on title: Custom error message and default
+        response object (problem details)
       </li>
       <li>
         Add aggregate function query example (count of tasks by priority level)
@@ -23,6 +31,7 @@ export const OutstandingTasks = () => (
         Server side caching (as its serverless this would need to be a central
         redis style cache)
       </li>
+      <li>Integrate the date picker</li>
       <li>
         Domain events (some infrastructure for pushing events and subscribing)
       </li>

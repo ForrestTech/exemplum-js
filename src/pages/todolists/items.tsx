@@ -5,7 +5,7 @@ import { trpc } from "utils/trpc";
 import { withAuthRequired } from "@features/common/withAuth";
 import Layout from "@features/common/Components/Layout/Layout";
 import LoadingWrapper from "@features/common/Components/LoadingWrapper/LoadingWrapper";
-import AddTodoItemForm from "@features/Todo/AddTodoListItemForm/AddTodotemForm";
+import AddTodoItemForm from "@features/Todo/AddTodoListItemForm/AddTodoItemForm";
 import TodoListsItems from "@features/Todo/TodoListsItems/TodoListsItems";
 
 const Lists: NextPage = () => {
