@@ -10,11 +10,9 @@ import {
 import { trpc } from "utils/trpc";
 import toast from "react-hot-toast";
 import clsx from "clsx";
-import Tooltip from "@features/common/Components/Tooltip/Tooltip";
-import Datepicker from "tailwind-datepicker-react";
-import dayjs from "dayjs";
+import TodoListItemEditPanel from "./TodoListItemEditPanel/TodoListItemEditPanel";
 
-const claimEditModeAtom = atom<TodoItem | undefined>(undefined);
+export const claimEditModeAtom = atom<TodoItem | undefined>(undefined);
 
 const TodoListsItems = ({ todoItem }: { todoItem: TodoItem[] | undefined }) => (
   <div>
@@ -33,17 +31,17 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
   const utils = trpc.useContext();
   const updateTodo = trpc.todoItems.update.useMutation({
     onSuccess: (input) => {
-      utils.todoItems.inList.invalidate(input.id);
+      utils.todoItems.inList.invalidate(input.todoListId);
     },
   });
   const toggleComplete = trpc.todoItems.toggleComplete.useMutation({
     onSuccess: (input) => {
-      utils.todoItems.inList.invalidate(input?.id);
+      utils.todoItems.inList.invalidate(input?.todoListId);
     },
   });
   const deleteToDo = trpc.todoItems.delete.useMutation({
     onSuccess: (input) => {
-      utils.todoItems.inList.invalidate(input.id);
+      utils.todoItems.inList.invalidate(input.todoListId);
     },
   });
 
@@ -94,17 +92,6 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
   const isEditMode = useMemo(() => {
     return claimEditTodo?.id === item.id;
   }, [claimEditTodo, item.id]);
-
-  const [showDueDate, setShowDueDate] = useState(false);
-  const [showReminderDate, setShowReminderDate] = useState(false);
-
-  const handleChangeDueDate = (selectedDate: Date) => {
-    console.log(selectedDate);
-  };
-
-  const handleChangeReminderDate = (selectedDate: Date) => {
-    console.log(selectedDate);
-  };
 
   return (
     <div className="grid-row-2 mt-2 grid max-w-xl">
@@ -183,53 +170,7 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
           </>
         )}
       </div>
-      <div
-        className={clsx(
-          !isEditMode && "hidden",
-          "flex max-w-xl p-4 hover:bg-gray-100 dark:bg-slate-800"
-        )}
-      >
-        <div className="relative w-44">
-          <label
-            htmlFor="date"
-            className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
-          >
-            Due Date
-          </label>
-          <Datepicker
-            options={{
-              title: "Due Date",
-              autoHide: true,
-              todayBtn: false,
-              clearBtn: true,
-              datepickerClassNames: "top-15",
-            }}
-            onChange={handleChangeDueDate}
-            show={showDueDate}
-            setShow={(state: boolean) => setShowDueDate(state)}
-          />
-        </div>
-        <div className="relative w-44 pl-4">
-          <label
-            htmlFor="date"
-            className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-300"
-          >
-            Reminder Date
-          </label>
-          <Datepicker
-            options={{
-              title: "Reminder Date",
-              autoHide: true,
-              todayBtn: false,
-              clearBtn: true,
-              datepickerClassNames: "top-15",
-            }}
-            onChange={handleChangeReminderDate}
-            show={showReminderDate}
-            setShow={(state: boolean) => setShowReminderDate(state)}
-          />
-        </div>
-      </div>
+      <TodoListItemEditPanel item={item} />
     </div>
   );
 };

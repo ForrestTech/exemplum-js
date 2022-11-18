@@ -5,6 +5,7 @@ import {
   updatePriorityLevelHandler,
 } from "@features/Todo/todoItems";
 import { PriorityLevel } from "@prisma/client";
+import { now } from "@features/common/dateHelpers";
 
 export const todoItemRouter = router({
   create: protectedProcedure
@@ -52,7 +53,7 @@ export const todoItemRouter = router({
       z.object({ id: z.bigint(), priorityLevel: z.nativeEnum(PriorityLevel) })
     )
     .mutation(async ({ ctx, input }) => {
-      const data = updatePriorityLevelHandler(input.priorityLevel, new Date());
+      const data = updatePriorityLevelHandler(input.priorityLevel, now());
       const todoItem = await ctx.prisma.todoItem.update({
         where: { id: input.id },
         data: data,
@@ -79,10 +80,28 @@ export const todoItemRouter = router({
           where: { id: input },
           data: {
             isComplete: !todoItem.isComplete,
-            completedAt: todoItem.isComplete ? null : new Date(),
+            completedAt: todoItem.isComplete ? null : now(),
           },
         });
         return updatedItem;
       }
+    }),
+  updateDueDate: protectedProcedure
+    .input(z.object({ id: z.bigint(), dueDate: z.date() }))
+    .mutation(async ({ ctx, input }) => {
+      const todoItem = await ctx.prisma.todoItem.update({
+        where: { id: input.id },
+        data: input,
+      });
+      return todoItem;
+    }),
+  updateReminder: protectedProcedure
+    .input(z.object({ id: z.bigint(), reminder: z.date() }))
+    .mutation(async ({ ctx, input }) => {
+      const todoItem = await ctx.prisma.todoItem.update({
+        where: { id: input.id },
+        data: input,
+      });
+      return todoItem;
     }),
 });
