@@ -3,6 +3,7 @@ import { z } from "zod";
 import {
   createTodoItemSchema,
   updatePriorityLevelHandler,
+  updateTodoItemSchema,
 } from "@features/Todo/todoItems";
 import { PriorityLevel } from "@prisma/client";
 import { now } from "@features/common/dateHelpers";
@@ -27,20 +28,13 @@ export const todoItemRouter = router({
     return todoItem;
   }),
   inList: protectedProcedure.input(z.bigint()).query(async ({ ctx, input }) => {
-    console.log("in list", input);
     const todoItem = await ctx.prisma.todoItem.findMany({
       where: { todoListId: input },
     });
     return todoItem;
   }),
   update: protectedProcedure
-    .input(
-      z.object({
-        id: z.bigint(),
-        title: z.string().min(3, { message: "Title is required" }).max(255),
-        notes: z.string().optional().nullable(),
-      })
-    )
+    .input(updateTodoItemSchema)
     .mutation(async ({ ctx, input }) => {
       const todoItem = await ctx.prisma.todoItem.update({
         where: { id: input.id },
@@ -50,10 +44,13 @@ export const todoItemRouter = router({
     }),
   setPriority: protectedProcedure
     .input(
-      z.object({ id: z.bigint(), priorityLevel: z.nativeEnum(PriorityLevel) })
+      z.object({
+        id: z.bigint(),
+        priority: z.nativeEnum(PriorityLevel),
+      })
     )
     .mutation(async ({ ctx, input }) => {
-      const data = updatePriorityLevelHandler(input.priorityLevel, now());
+      const data = updatePriorityLevelHandler(input.priority, now());
       const todoItem = await ctx.prisma.todoItem.update({
         where: { id: input.id },
         data: data,

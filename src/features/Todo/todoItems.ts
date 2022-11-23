@@ -9,6 +9,12 @@ export const createTodoItemSchema = z.object({
   todoListId: z.bigint(),
 });
 
+export const updateTodoItemSchema = z.object({
+  id: z.bigint(),
+  title: z.string().min(3, { message: "Title is required" }).max(255),
+  notes: z.string().optional().nullable(),
+});
+
 /* Demonstrate encapsulating business logic in a pure function.
   This function is however pragmatic we dont take in the entire todoItem
   or return the whole todo item as the update only requires the data provided and returned.

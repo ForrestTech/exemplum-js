@@ -14,7 +14,6 @@ export const todoListsRouter = router({
     return todoLists;
   }),
   single: protectedProcedure.input(z.bigint()).query(async ({ ctx, input }) => {
-    console.log("single called", input);
     const todoList = await ctx.prisma.todoList.findUnique({
       where: { id: input },
     });

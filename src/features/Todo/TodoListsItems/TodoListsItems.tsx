@@ -11,6 +11,8 @@ import { trpc } from "utils/trpc";
 import toast from "react-hot-toast";
 import clsx from "clsx";
 import TodoListItemEditPanel from "./TodoListItemEditPanel/TodoListItemEditPanel";
+import { updateTodoItemSchema } from "../todoItems";
+import { useZodForm } from "@features/common/Components/Forms/Form";
 
 export const claimEditModeAtom = atom<TodoItem | undefined>(undefined);
 
@@ -25,7 +27,6 @@ const TodoListsItems = ({ todoItem }: { todoItem: TodoItem[] | undefined }) => (
 
 const TodoListItem = ({ item }: { item: TodoItem }) => {
   const [claimEditTodo, setClaimEditTodo] = useAtom(claimEditModeAtom);
-  const [title, setTitle] = useState<string>(item.title);
   const [complete, setComplete] = useState<boolean>(item.isComplete);
 
   const utils = trpc.useContext();
@@ -45,47 +46,44 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
     },
   });
 
-  const handleEdit = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useZodForm({
+    schema: updateTodoItemSchema,
+    defaultValues: {
+      title: item.title,
+      id: item.id,
+    },
+  });
+
+  const editModeOn = () => {
     setClaimEditTodo(item);
   };
 
-  const handleKeyPress = async (
-    event: React.KeyboardEvent,
-    itemToEdit: TodoItem
-  ) => {
-    if (event.key === "Enter") {
-      handleSave(itemToEdit);
-      setClaimEditTodo(item);
-    }
-  };
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-  };
-
-  const handleSave = (itemToSave: TodoItem) => {
-    const updated = itemToSave;
-    updated.title = title;
-
-    updateTodo.mutate(updated);
+  const saveTodo = async ({ id, title }: { id: bigint; title: string }) => {
+    await updateTodo.mutateAsync({ id, title });
 
     setClaimEditTodo(undefined);
+
+    toast.success("Item updated");
   };
 
-  const handleCompleted = (
+  const toggleCompleted = async (
     itemToComplete: TodoItem,
     event: ChangeEvent<HTMLInputElement>
   ) => {
     setComplete(event.currentTarget.checked);
-    toggleComplete.mutate(itemToComplete.id);
+    await toggleComplete.mutateAsync(itemToComplete.id);
   };
 
-  const handleDelete = (itemToDelete: TodoItem) => {
-    deleteToDo.mutate(itemToDelete.id);
+  const deleteTodo = async (itemToDelete: TodoItem) => {
+    await deleteToDo.mutateAsync(itemToDelete.id);
     toast.error("Item deleted");
   };
 
-  const handleCancel = () => {
+  const cancelEdit = () => {
     setClaimEditTodo(undefined);
   };
 
@@ -102,29 +100,57 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
         )}
       >
         {isEditMode ? (
-          <>
-            <input
-              className="focus:shadow-outline w-96 appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-              autoFocus
-              id="title"
-              type="text"
-              placeholder="Title"
-              value={title}
-              onChange={(event) => handleChange(event)}
-              onKeyPress={(event) => handleKeyPress(event, item)}
-            />
+          <form
+            className="grid grid-flow-col"
+            onSubmit={handleSubmit(async (values) => {
+              await saveTodo(values);
+            })}
+          >
+            <div>
+              <input
+                className="focus:shadow-outline w-96 appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                autoFocus
+                id="title"
+                type="text"
+                placeholder="Title"
+                {...register("title")}
+                onKeyPress={async (event) => {
+                  if (event.key === "Enter") {
+                    await handleSubmit(async (values) => {
+                      console.log("key press submit");
+                      await saveTodo(values);
+
+                      setClaimEditTodo(undefined);
+                    });
+                  }
+                }}
+              />
+              {errors.title?.message && (
+                <div className="text-red-500">{errors.title?.message}</div>
+              )}
+            </div>
             <span className="grow" />
             <CheckIcon
               title="Save"
-              onClick={() => handleSave(item)}
-              className="h-6 w-6 cursor-pointer dark:text-white"
+              onClick={() =>
+                handleSubmit(async (values) => {
+                  console.log("here");
+                  await saveTodo(values);
+                })
+              }
+              className={clsx(
+                "ml-2 mt-2 h-6 w-6 cursor-pointer",
+                isValid
+                  ? "text-gray-200 dark:text-gray-400"
+                  : "text-black dark:text-white"
+              )}
             />
             <XMarkIcon
               title="Cancel"
-              onClick={() => handleCancel()}
-              className="ml-2 h-6 w-6 cursor-pointer dark:text-white"
+              onClick={() => cancelEdit()}
+              className="ml-2 mt-2 h-6 w-6 cursor-pointer dark:text-white"
             />
-          </>
+          </form>
         ) : (
           <>
             <span
@@ -138,7 +164,7 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
             <span className="grow" />
             <PencilIcon
               title={!complete ? "Edit" : "Cant edit completed item"}
-              onClick={() => handleEdit()}
+              onClick={() => editModeOn()}
               className={clsx(
                 "ml-2 h-6 w-6 cursor-pointer",
                 complete
@@ -154,7 +180,7 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
               <input
                 type="checkbox"
                 onChange={(event) => {
-                  handleCompleted(item, event);
+                  toggleCompleted(item, event);
                 }}
                 checked={complete}
                 id="default-toggle"
@@ -164,7 +190,7 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
             </label>
             <TrashIcon
               title="Delete"
-              onClick={() => handleDelete(item)}
+              onClick={() => deleteTodo(item)}
               className="ml-2 h-6 w-6 cursor-pointer dark:text-white"
             />
           </>
