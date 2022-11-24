@@ -5,6 +5,7 @@ import type { Session } from "next-auth";
 import type { AppType } from "next/app";
 import { trpc } from "../utils/trpc";
 import { Toaster } from "react-hot-toast";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import LogRocket from "logrocket";
 import setupLogRocketReact from "logrocket-react";
@@ -25,6 +26,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <Toaster />
       </div>
       <Component {...pageProps} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </SessionProvider>
   );
 };
