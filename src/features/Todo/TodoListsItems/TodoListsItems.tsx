@@ -13,7 +13,10 @@ import clsx from "clsx";
 import TodoListItemEditPanel from "./TodoListItemEditPanel/TodoListItemEditPanel";
 import { updateTodoItemSchema } from "../todoItems";
 import { useZodForm } from "@features/common/Components/Forms/Form";
-import { isUniqueConstraintError } from "@features/common/errorHelpers";
+import {
+  isUniqueConstraintError,
+  errorHandler,
+} from "@features/common/errorHelpers";
 
 export const claimEditModeAtom = atom<TodoItem | undefined>(undefined);
 
@@ -70,9 +73,9 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
       setClaimEditTodo(undefined);
       toast.success("Item updated");
     } catch (error) {
-      const { isError, field } = isUniqueConstraintError(error);
-      if (isError) {
-        toast.error(`The ${field} must be unique`);
+      const { canHandle, message } = errorHandler(error);
+      if (canHandle) {
+        toast.error(message);
       }
     }
   };
