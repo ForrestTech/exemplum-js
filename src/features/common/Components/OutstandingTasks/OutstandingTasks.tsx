@@ -2,11 +2,6 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>Vercel failed build notification</li>
-      <li>
-        encapsulation of domain logic full stack (cant schedule a task due date
-        for the same hour)
-      </li>
       <li>
         Integration testing
         https://github.com/trpc/examples-next-prisma-starter/blob/main/src/server/routers/post.test.ts
@@ -15,6 +10,7 @@ export const OutstandingTasks = () => (
       <li>
         End to end test
         https://github.com/trpc/examples-next-prisma-starter/blob/main/playwright/smoke.test.ts
+        https://github.com/trpc/examples-next-prisma-starter/blob/main/.github/workflows/main.yml
       </li>
       <li>
         Set tailwind color variables
@@ -25,6 +21,10 @@ export const OutstandingTasks = () => (
         https://github.com/trpc/examples-next-prisma-starter/blob/main/.github/workflows/main.yml
       </li>
       <li>Use cva for my buttons react-cva</li>
+      <li>
+        encapsulation of domain logic full stack (cant schedule a task due date
+        for the same hour)
+      </li>
       <li>
         Add aggregate function query example (count of tasks by priority level)
       </li>

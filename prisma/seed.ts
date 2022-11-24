@@ -7,7 +7,7 @@ async function main() {
     update: {},
     create: {
       title: "Shopping",
-      color: "seed",
+      color: "#10B981",
       items: {
         create: [
           {
