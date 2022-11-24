@@ -8,11 +8,22 @@ export const OutstandingTasks = () => (
         for the same hour)
       </li>
       <li>Make sure that all components meet solid principles</li>
-      <li>Integration testing</li>
+      <li>
+        Integration testing
+        https://github.com/trpc/examples-next-prisma-starter/blob/main/src/server/routers/post.test.ts
+      </li>
       <li>Unit testing</li>
+      <li>
+        End to end test
+        https://github.com/trpc/examples-next-prisma-starter/blob/main/playwright/smoke.test.ts
+      </li>
       <li>
         Set tailwind color variables
         https://www.youtube.com/watch?v=T-Zv73yZ_QI&t=339s
+      </li>
+      <li>
+        CI/CD process
+        https://github.com/trpc/examples-next-prisma-starter/blob/main/.github/workflows/main.yml
       </li>
       <li>Use cva for my buttons react-cva</li>
       <li>

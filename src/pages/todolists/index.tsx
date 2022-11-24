@@ -2,8 +2,7 @@ import { NextPage } from "next";
 import { ChangeEvent, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { trpc } from "utils/trpc";
-import { TodoList } from "@prisma/client";
+import { trpc, AppRouterInputTypes, AppRouterOutputTypes } from "utils/trpc";
 import { withAuthRequired } from "@features/common/withAuth";
 import {
   CheckIcon,
@@ -41,6 +40,9 @@ const Lists: NextPage = () => {
   );
 };
 
+type TodoList = AppRouterOutputTypes["todoLists"]["create"];
+type TodoListUpdate = AppRouterInputTypes["todoLists"]["update"];
+
 const TodoLists = ({ todoLists }: { todoLists: TodoList[] }) => {
   return (
     <div>
@@ -77,7 +79,10 @@ const TodoListEntry = ({ todoList }: { todoList: TodoList }) => {
     listToEdit: TodoList
   ) => {
     if (event.key === "Enter") {
-      handleSave(listToEdit);
+      updateList({
+        id: listToEdit.id,
+        title: listTitle,
+      });
       setEditMode(false);
     }
   };
@@ -87,7 +92,7 @@ const TodoListEntry = ({ todoList }: { todoList: TodoList }) => {
     setListTitle(event.target.value);
   };
 
-  const handleSave = (listToUpdate: TodoList) => {
+  const updateList = (listToUpdate: TodoListUpdate) => {
     const updated = listToUpdate;
     updated.title = listTitle;
 
@@ -123,7 +128,12 @@ const TodoListEntry = ({ todoList }: { todoList: TodoList }) => {
           <span className="grow" />
           <Tooltip label="Save">
             <CheckIcon
-              onClick={() => handleSave(todoList)}
+              onClick={() =>
+                updateList({
+                  id: todoList.id,
+                  title: listTitle,
+                })
+              }
               className="h-6 w-6 cursor-pointer dark:text-white"
             />
           </Tooltip>

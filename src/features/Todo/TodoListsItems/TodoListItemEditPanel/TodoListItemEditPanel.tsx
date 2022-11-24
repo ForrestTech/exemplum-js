@@ -1,15 +1,15 @@
 import clsx from "clsx";
 import { useAtom } from "jotai";
 import { useMemo, useState } from "react";
-import { PriorityLevel, TodoItem } from "@prisma/client";
 import Datepicker from "tailwind-datepicker-react";
 import { claimEditModeAtom } from "../TodoListsItems";
-import { trpc } from "utils/trpc";
+import { AppRouterOutputTypes, trpc } from "utils/trpc";
 import { Menu } from "@headlessui/react";
 import { BarsArrowUpIcon } from "@heroicons/react/20/solid";
-import { getEnumNames } from "@features/common/enumHelpers";
 import toast from "react-hot-toast";
+import { PriorityLevel } from "@features/Todo/todoItems";
 
+type TodoItem = AppRouterOutputTypes["todoItems"]["create"];
 interface TodoListItemEditPanelProps {
   item: TodoItem;
 }
@@ -122,7 +122,7 @@ const TodoListItemEditPanel = ({ item }: TodoListItemEditPanelProps) => {
             as="section"
             className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md border border-slate-400 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           >
-            {getEnumNames(PriorityLevel).map((priority) => (
+            {Object.keys(PriorityLevel).map((priority) => (
               <Menu.Item
                 as="div"
                 key={priority}

@@ -3,9 +3,9 @@ CREATE TYPE "PriorityLevel" AS ENUM ('High', 'Medium', 'Low');
 
 -- CreateTable
 CREATE TABLE "TodoList" (
-    "id" INT8 NOT NULL DEFAULT unique_rowid(),
-    "title" STRING(250) NOT NULL,
-    "color" STRING(250) NOT NULL,
+    "id" BIGSERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "color" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -14,14 +14,15 @@ CREATE TABLE "TodoList" (
 
 -- CreateTable
 CREATE TABLE "TodoItem" (
-    "id" INT8 NOT NULL DEFAULT unique_rowid(),
-    "title" STRING(250) NOT NULL,
-    "todoListId" INT8 NOT NULL,
-    "notes" STRING NOT NULL,
-    "isComplete" BOOL NOT NULL DEFAULT false,
-    "reminder" TIMESTAMP(3) NOT NULL,
-    "dueDate" TIMESTAMP(3) NOT NULL,
-    "priorityLevel" "PriorityLevel" NOT NULL,
+    "id" BIGSERIAL NOT NULL,
+    "title" TEXT NOT NULL,
+    "todoListId" BIGINT NOT NULL,
+    "notes" TEXT,
+    "isComplete" BOOLEAN NOT NULL DEFAULT false,
+    "reminder" TIMESTAMP(3),
+    "dueDate" TIMESTAMP(3),
+    "priorityLevel" "PriorityLevel",
+    "completedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -30,8 +31,8 @@ CREATE TABLE "TodoItem" (
 
 -- CreateTable
 CREATE TABLE "Example" (
-    "id" STRING NOT NULL,
-    "name" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -40,28 +41,28 @@ CREATE TABLE "Example" (
 
 -- CreateTable
 CREATE TABLE "Account" (
-    "id" STRING NOT NULL,
-    "userId" STRING NOT NULL,
-    "type" STRING NOT NULL,
-    "provider" STRING NOT NULL,
-    "providerAccountId" STRING NOT NULL,
-    "refresh_token" STRING,
-    "refresh_token_expires_in" INT4,
-    "access_token" STRING,
-    "expires_at" INT4,
-    "token_type" STRING,
-    "scope" STRING,
-    "id_token" STRING,
-    "session_state" STRING,
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "provider" TEXT NOT NULL,
+    "providerAccountId" TEXT NOT NULL,
+    "refresh_token" TEXT,
+    "refresh_token_expires_in" INTEGER,
+    "access_token" TEXT,
+    "expires_at" INTEGER,
+    "token_type" TEXT,
+    "scope" TEXT,
+    "id_token" TEXT,
+    "session_state" TEXT,
 
     CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Session" (
-    "id" STRING NOT NULL,
-    "sessionToken" STRING NOT NULL,
-    "userId" STRING NOT NULL,
+    "id" TEXT NOT NULL,
+    "sessionToken" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
     "expires" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
@@ -69,19 +70,19 @@ CREATE TABLE "Session" (
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" STRING NOT NULL,
-    "name" STRING,
-    "email" STRING,
+    "id" TEXT NOT NULL,
+    "name" TEXT,
+    "email" TEXT,
     "emailVerified" TIMESTAMP(3),
-    "image" STRING,
+    "image" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "VerificationToken" (
-    "identifier" STRING NOT NULL,
-    "token" STRING NOT NULL,
+    "identifier" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
     "expires" TIMESTAMP(3) NOT NULL
 );
 

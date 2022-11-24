@@ -1,4 +1,3 @@
-import { TodoItem } from "@prisma/client";
 import { atom, useAtom } from "jotai";
 import { ChangeEvent, useMemo, useState } from "react";
 import {
@@ -7,13 +6,15 @@ import {
   TrashIcon,
   XMarkIcon,
 } from "@heroicons/react/20/solid";
-import { trpc } from "utils/trpc";
+import { AppRouterOutputTypes, trpc } from "utils/trpc";
 import toast from "react-hot-toast";
 import clsx from "clsx";
 import TodoListItemEditPanel from "./TodoListItemEditPanel/TodoListItemEditPanel";
 import { updateTodoItemSchema } from "../todoItems";
 import { useZodForm } from "@features/common/Components/Forms/Form";
 import { errorHandler } from "@features/common/errorHelpers";
+
+type TodoItem = AppRouterOutputTypes["todoItems"]["create"];
 
 export const claimEditModeAtom = atom<TodoItem | undefined>(undefined);
 

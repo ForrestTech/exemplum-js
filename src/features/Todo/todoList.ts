@@ -10,8 +10,13 @@ export const schema = z.object({
     .startsWith("#", { message: "Must be a hex color" }),
 });
 
-export const entity = z.object({
+const entity = z.object({
   id: z.bigint(),
 });
 
-export const updateTodoListSchema = z.intersection(schema, entity);
+export const updateTodoListSchema = z.intersection(
+  z.object({
+    title: z.string().min(3, { message: "Title is required" }).max(255),
+  }),
+  entity
+);

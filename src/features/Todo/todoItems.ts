@@ -1,4 +1,3 @@
-import { PriorityLevel } from "@prisma/client";
 import { match } from "ts-pattern";
 import { z } from "zod";
 import dayjs from "dayjs";
@@ -14,6 +13,14 @@ export const updateTodoItemSchema = z.object({
   title: z.string().min(3, { message: "Title is required" }).max(255),
   notes: z.string().optional().nullable(),
 });
+
+export const PriorityLevel = {
+  High: "High",
+  Medium: "Medium",
+  Low: "Low",
+} as const;
+
+export type PriorityLevel = typeof PriorityLevel[keyof typeof PriorityLevel];
 
 /* Demonstrate encapsulating business logic in a pure function.
   This function is however pragmatic we dont take in the entire todoItem

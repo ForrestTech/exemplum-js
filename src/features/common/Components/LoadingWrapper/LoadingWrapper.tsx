@@ -1,4 +1,4 @@
-const Empty = () => <div>Empty</div>;
+const Empty = () => <div className="dark:text-white">Empty</div>;
 
 interface LoadingFailedProps {
   error: { message?: string };
