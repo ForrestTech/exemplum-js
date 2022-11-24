@@ -2,12 +2,11 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>Run postgres locally in docker</li>
+      <li>Vercel failed build notification</li>
       <li>
         encapsulation of domain logic full stack (cant schedule a task due date
         for the same hour)
       </li>
-      <li>Make sure that all components meet solid principles</li>
       <li>
         Integration testing
         https://github.com/trpc/examples-next-prisma-starter/blob/main/src/server/routers/post.test.ts
