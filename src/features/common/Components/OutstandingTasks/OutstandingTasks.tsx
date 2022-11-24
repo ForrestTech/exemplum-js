@@ -2,10 +2,6 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>
-        Unique constraint error on title: Custom error message and default
-        response object (problem details)
-      </li>
       <li>Run postgres locally in docker</li>
       <li>
         encapsulation of domain logic full stack (cant schedule a task due date
@@ -51,6 +47,7 @@ export const OutstandingTasks = () => (
       <li>Vercel analytics @vercel/analytics</li>
       <li>Growthbook integration</li>
       <li>Schedule Task Solution</li>
+      <li>Try out codespaces</li>
       <li>SaaS messaging functions</li>
       <li>Integrate Polly</li>
       <li>Loading component add to table</li>

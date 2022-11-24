@@ -13,6 +13,7 @@ import clsx from "clsx";
 import TodoListItemEditPanel from "./TodoListItemEditPanel/TodoListItemEditPanel";
 import { updateTodoItemSchema } from "../todoItems";
 import { useZodForm } from "@features/common/Components/Forms/Form";
+import { isUniqueConstraintError } from "@features/common/errorHelpers";
 
 export const claimEditModeAtom = atom<TodoItem | undefined>(undefined);
 
@@ -49,6 +50,7 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid },
   } = useZodForm({
     schema: updateTodoItemSchema,
@@ -63,11 +65,16 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
   };
 
   const saveTodo = async ({ id, title }: { id: bigint; title: string }) => {
-    await updateTodo.mutateAsync({ id, title });
-
-    setClaimEditTodo(undefined);
-
-    toast.success("Item updated");
+    try {
+      await updateTodo.mutateAsync({ id, title });
+      setClaimEditTodo(undefined);
+      toast.success("Item updated");
+    } catch (error) {
+      const { isError, field } = isUniqueConstraintError(error);
+      if (isError) {
+        toast.error(`The ${field} must be unique`);
+      }
+    }
   };
 
   const toggleCompleted = async (
@@ -84,6 +91,7 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
   };
 
   const cancelEdit = () => {
+    reset();
     setClaimEditTodo(undefined);
   };
 
@@ -117,10 +125,7 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
                 onKeyPress={async (event) => {
                   if (event.key === "Enter") {
                     await handleSubmit(async (values) => {
-                      console.log("key press submit");
                       await saveTodo(values);
-
-                      setClaimEditTodo(undefined);
                     });
                   }
                 }}
@@ -134,7 +139,6 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
               title="Save"
               onClick={() =>
                 handleSubmit(async (values) => {
-                  console.log("here");
                   await saveTodo(values);
                 })
               }
