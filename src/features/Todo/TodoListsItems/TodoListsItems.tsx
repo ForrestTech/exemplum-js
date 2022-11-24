@@ -13,10 +13,7 @@ import clsx from "clsx";
 import TodoListItemEditPanel from "./TodoListItemEditPanel/TodoListItemEditPanel";
 import { updateTodoItemSchema } from "../todoItems";
 import { useZodForm } from "@features/common/Components/Forms/Form";
-import {
-  isUniqueConstraintError,
-  errorHandler,
-} from "@features/common/errorHelpers";
+import { errorHandler } from "@features/common/errorHelpers";
 
 export const claimEditModeAtom = atom<TodoItem | undefined>(undefined);
 
