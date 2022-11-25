@@ -6,7 +6,7 @@ import { AppRouter, appRouter } from "./_app";
 import { inferProcedureInput } from "@trpc/server";
 import { v4 as uuid } from "uuid";
 
-test("add and get post", async () => {
+test("add and get todo list", async () => {
   const ctx = await createContextInner({
     session: {
       user: {

@@ -2,7 +2,6 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>Unit testing</li>
       <li>
         End to end test
         https://github.com/trpc/examples-next-prisma-starter/blob/main/playwright/smoke.test.ts
