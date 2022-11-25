@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export const Welcome = () => (
   <>
@@ -23,18 +24,22 @@ export const Welcome = () => (
         libraries and tools.
       </div>
       <div className="flex justify-center p-4 pt-12">
-        <button
-          type="button"
-          className="text-md mr-2 mb-2 rounded-md bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 px-12 py-2.5 text-center font-medium text-white hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-emerald-300 dark:focus:ring-emerald-800"
-        >
-          GETTING STARTED
-        </button>
-        <button
-          type="button"
-          className="text-md mr-2 mb-2 rounded-md bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900 px-12 py-2.5 text-center font-medium text-white hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-slate-300 dark:focus:ring-slate-800"
-        >
-          GITHUB
-        </button>
+        <Link href="https://github.com/ForrestTech/exemplum-js" passHref>
+          <button
+            type="button"
+            className="text-md mr-2 mb-2 rounded-md bg-gradient-to-r from-emerald-400 via-emerald-500 to-emerald-600 px-12 py-2.5 text-center font-medium text-white hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-emerald-300 dark:focus:ring-emerald-800"
+          >
+            GETTING STARTED
+          </button>
+        </Link>
+        <Link href="https://github.com/ForrestTech/exemplum-js" passHref>
+          <button
+            type="button"
+            className="text-md mr-2 mb-2 rounded-md bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900 px-12 py-2.5 text-center font-medium text-white hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-slate-300 dark:focus:ring-slate-800"
+          >
+            GITHUB
+          </button>
+        </Link>
       </div>
     </div>
   </>

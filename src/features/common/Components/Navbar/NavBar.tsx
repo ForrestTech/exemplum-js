@@ -230,13 +230,18 @@ const LoginControl = () => {
     <>
       <Tooltip
         label={sessionData ? `Logout ${sessionData.user?.name}` : "Login"}
-        onClick={sessionData ? () => signOut() : () => signIn()}
         className="pb-1 pl-2 align-middle"
       >
         {sessionData ? (
-          <ArrowRightOnRectangleIcon className="mb-1 ml-2 inline h-6 w-6 cursor-pointer rounded-full text-white hover:bg-gray-200/30" />
+          <ArrowRightOnRectangleIcon
+            className="mb-1 ml-2 inline h-6 w-6 cursor-pointer rounded-full text-white hover:bg-gray-200/30"
+            onClick={sessionData ? () => signOut() : () => signIn()}
+          />
         ) : (
-          <ArrowLeftOnRectangleIcon className="mb-1 ml-2 inline h-6 w-6 cursor-pointer rounded-full text-white hover:bg-gray-200/30" />
+          <ArrowLeftOnRectangleIcon
+            className="mb-1 ml-2 inline h-6 w-6 cursor-pointer rounded-full text-white hover:bg-gray-200/30"
+            onClick={sessionData ? () => signOut() : () => signIn()}
+          />
         )}
       </Tooltip>
     </>
