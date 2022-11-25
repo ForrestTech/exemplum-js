@@ -3,6 +3,10 @@ export const OutstandingTasks = () => (
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
       <li>
+        Database Transaction (more like bulk update) (nark multiple items as
+        done)
+      </li>
+      <li>
         encapsulation of domain logic full stack (cant schedule a task due date
         for the same hour)
       </li>
@@ -30,10 +34,6 @@ export const OutstandingTasks = () => (
         https://vercel.com/docs/concepts/git/vercel-for-github changesets
         https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md
       </li>
-      <li>Server side logging</li>
-      <li>Log rocket integration</li>
-      <li>SQL error translation</li>
-      <li>Database Transaction (nark multiple items as done)</li>
       <li>
         Server side caching (as its serverless this would need to be a central
         redis style cache) Render possibly

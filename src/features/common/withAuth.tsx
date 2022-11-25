@@ -1,5 +1,6 @@
 import { signIn, useSession } from "next-auth/react";
 import { ComponentType, FC } from "react";
+import { Loader } from "./Components/LoadingWrapper/LoadingWrapper";
 
 export const withAuthRequired = <P extends object>(
   Component: ComponentType<P>
@@ -7,14 +8,14 @@ export const withAuthRequired = <P extends object>(
   return function WithAuthenticationRequired(props: P): JSX.Element {
     const { status } = useSession();
 
-    if (status === "loading") {
-      return <p>Loading...</p>;
-    }
-
     if (status === "unauthenticated") {
       signIn();
     }
 
-    return <Component {...props} />;
+    if (status === "authenticated") {
+      return <Component {...props} />;
+    }
+
+    return <Loader />;
   };
 };
