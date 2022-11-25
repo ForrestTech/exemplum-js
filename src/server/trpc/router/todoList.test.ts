@@ -4,6 +4,7 @@
 import { createContextInner } from "../context";
 import { AppRouter, appRouter } from "./_app";
 import { inferProcedureInput } from "@trpc/server";
+import { v4 as uuid } from "uuid";
 
 test("add and get post", async () => {
   const ctx = await createContextInner({
@@ -19,7 +20,7 @@ test("add and get post", async () => {
   const caller = appRouter.createCaller(ctx);
 
   const input: inferProcedureInput<AppRouter["todoLists"]["add"]> = {
-    title: "hello test",
+    title: `Test List - ${uuid()}`,
     color: "#10B981",
   };
 
@@ -27,12 +28,6 @@ test("add and get post", async () => {
   const single = await caller.todoLists.byId(todoList.id);
 
   expect(single).toMatchObject(input);
-});
-
-test("2 + 2 = 4", async () => {
-  const four = 2 + 2;
-
-  expect(four).toBe(4);
 });
 
 export {};

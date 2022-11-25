@@ -2,10 +2,6 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>
-        Integration testing
-        https://github.com/trpc/examples-next-prisma-starter/blob/main/src/server/routers/post.test.ts
-      </li>
       <li>Unit testing</li>
       <li>
         End to end test
