@@ -12,7 +12,7 @@ const defaultTodoListSelect = Prisma.validator<Prisma.TodoListSelect>()({
 });
 
 export const todoListsRouter = router({
-  create: protectedProcedure.input(schema).mutation(async ({ ctx, input }) => {
+  add: protectedProcedure.input(schema).mutation(async ({ ctx, input }) => {
     const newTodoList = await ctx.prisma.todoList.create({
       select: defaultTodoListSelect,
       data: input,
@@ -25,7 +25,7 @@ export const todoListsRouter = router({
     });
     return todoLists;
   }),
-  single: protectedProcedure.input(z.bigint()).query(async ({ ctx, input }) => {
+  byId: protectedProcedure.input(z.bigint()).query(async ({ ctx, input }) => {
     const todoList = await ctx.prisma.todoList.findUnique({
       select: defaultTodoListSelect,
       where: { id: input },
