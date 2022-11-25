@@ -34,34 +34,32 @@ export const OutstandingTasks = () => (
         https://vercel.com/docs/concepts/git/vercel-for-github changesets
         https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md
       </li>
-      <li>
-        Server side caching (as its serverless this would need to be a central
-        redis style cache) Render possibly
-      </li>
+      <li>Integrate Polly like retry for calling weather API</li>
       <li>
         Integrate the date picker (date format feature/ ability to set
         placeholder/does not have to have default date ){" "}
       </li>
-      <li>Sanity CMS integration for blog posting</li>
-      <li>Explore more ts-fs options</li>
+      <li>
+        Schedule Task Solution
+        https://vercel.com/guides/how-to-setup-cron-jobs-on-vercel
+      </li>
       <li>
         Domain events (some infrastructure for pushing events and subscribing)
       </li>
-      <li>Add repeat task feature</li>
       <li>Ably integration</li>
+      <li>Sanity CMS integration for blog posting</li>
+      <li>
+        Server side caching (as its serverless this would need to be a central
+        redis style cache) Render possibly
+      </li>
+      <li>Explore more ts-fs options</li>
       <li>
         Add attachment integrations, so we can upload file and have an example
         of file storage
       </li>
-      <li>Unit tests</li>
-      <li>Smoke tests</li>
-      <li>Vercel analytics @vercel/analytics</li>
       <li>Growthbook integration</li>
-      <li>Schedule Task Solution</li>
       <li>Custom 404 style</li>
       <li>Try out codespaces</li>
-      <li>SaaS messaging functions</li>
-      <li>Integrate Polly</li>
       <li>Loading component add to table</li>
       <li>Add pagination to table component</li>
       <li>Add selection to table component</li>
