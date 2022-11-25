@@ -5,9 +5,9 @@ import toast from "react-hot-toast";
 
 const AddTodoListsForm = () => {
   const trpcContext = trpc.useContext();
-  const addTodoList = trpc.todoList.create.useMutation({
+  const addTodoList = trpc.todoLists.add.useMutation({
     onSuccess: async () => {
-      await trpcContext.todoList.all.invalidate();
+      await trpcContext.todoLists.all.invalidate();
     },
   });
 

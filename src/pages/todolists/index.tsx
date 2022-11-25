@@ -18,7 +18,7 @@ import Tooltip from "@features/common/Components/Tooltip/Tooltip";
 import AddTodoListsForm from "@features/Todo/AddTodoListsForm/AddTodoListsForm";
 
 const Lists: NextPage = () => {
-  const { data, isLoading, error } = trpc.todoList.all.useQuery();
+  const { data, isLoading, error } = trpc.todoLists.all.useQuery();
 
   return (
     <>
@@ -40,8 +40,8 @@ const Lists: NextPage = () => {
   );
 };
 
-type TodoList = AppRouterOutputTypes["todoList"]["create"];
-type TodoListUpdate = AppRouterInputTypes["todoList"]["update"];
+type TodoList = AppRouterOutputTypes["todoLists"]["add"];
+type TodoListUpdate = AppRouterInputTypes["todoLists"]["update"];
 
 const TodoLists = ({ todoLists }: { todoLists: TodoList[] }) => {
   return (
@@ -59,14 +59,14 @@ const TodoListEntry = ({ todoList }: { todoList: TodoList }) => {
   const [listTitle, setListTitle] = useState<string>(todoList.title);
 
   const utils = trpc.useContext();
-  const updateTodo = trpc.todoList.update.useMutation({
+  const updateTodo = trpc.todoLists.update.useMutation({
     onSuccess: (input) => {
-      utils.todoList.single.invalidate(input.id);
+      utils.todoLists.byId.invalidate(input.id);
     },
   });
-  const deleteToDo = trpc.todoList.delete.useMutation({
+  const deleteToDo = trpc.todoLists.delete.useMutation({
     onSuccess: () => {
-      utils.todoList.all.invalidate();
+      utils.todoLists.all.invalidate();
     },
   });
 

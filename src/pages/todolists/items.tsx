@@ -31,9 +31,9 @@ const Lists: NextPage = () => {
     data: list,
     isLoading: listLoading,
     error: listError,
-  } = trpc.todoList.single.useQuery(listIdBI, {
+  } = trpc.todoLists.byId.useQuery(listIdBI, {
     queryKeyHashFn: () => {
-      return "todoLists.single." + listIdBI.toString();
+      return "todoLists.byId." + listIdBI.toString();
     },
   });
 
