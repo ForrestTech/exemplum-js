@@ -63,7 +63,7 @@ const Lists: NextPage = () => {
               isLoading={itemsLoading}
               error={itemsError}
             >
-              {todoItems && <TodoListsItems todoItem={todoItems} />}
+              {todoItems && <TodoListsItems todoItems={todoItems} />}
             </LoadingWrapper>
           </div>
         </div>

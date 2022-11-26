@@ -53,6 +53,7 @@ export const todoItemRouter = router({
     const todoItem = await ctx.prisma.todoItem.findMany({
       select: defaultTodoItemSelect,
       where: { todoListId: input },
+      orderBy: [{ createdAt: "asc" }],
     });
     return todoItem;
   }),
@@ -110,6 +111,22 @@ export const todoItemRouter = router({
         });
         return updatedItem;
       }
+    }),
+  markAsComplete: protectedProcedure
+    .input(z.array(z.bigint()))
+    .mutation(async ({ ctx, input }) => {
+      const todoItems = await ctx.prisma.todoItem.updateMany({
+        where: {
+          id: {
+            in: input,
+          },
+        },
+        data: {
+          isComplete: true,
+          completedAt: now(),
+        },
+      });
+      return todoItems;
     }),
   updateDueDate: protectedProcedure
     .input(z.object({ id: z.bigint(), dueDate: z.date() }))

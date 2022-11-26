@@ -34,6 +34,7 @@ export const OutstandingTasks = () => (
         https://vercel.com/docs/concepts/git/vercel-for-github changesets
         https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md
       </li>
+      <li>Migrate to Github new tasks management</li>
       <li>Integrate Polly like retry for calling weather API</li>
       <li>
         Integrate the date picker (date format feature/ ability to set

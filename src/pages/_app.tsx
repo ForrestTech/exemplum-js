@@ -20,12 +20,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  if (session?.user?.email) {
-    LogRocket.identify(session?.user?.email, {
-      name: session?.user?.name || "Anonymous User",
-      email: session?.user?.email,
-    });
-  }
+  // if (session?.user?.email) {
+  //   LogRocket.identify(session?.user?.email, {
+  //     name: session?.user?.name || "Anonymous User",
+  //     email: session?.user?.email,
+  //   });
+  // }
 
   return (
     <SessionProvider session={session}>

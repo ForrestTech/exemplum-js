@@ -13,23 +13,54 @@ import TodoListItemEditPanel from "./TodoListItemEditPanel/TodoListItemEditPanel
 import { updateTodoItemSchema } from "../todoItems";
 import { useZodForm } from "@features/common/Components/Forms/Form";
 import { errorHandler } from "@features/common/errorHelpers";
+import Toggle from "@features/common/Components/Toggle/Toggle";
 
 type TodoItem = AppRouterOutputTypes["todoItems"]["create"];
 
 export const claimEditModeAtom = atom<TodoItem | undefined>(undefined);
 
-const TodoListsItems = ({ todoItem }: { todoItem: TodoItem[] | undefined }) => (
-  <div>
-    {todoItem &&
-      todoItem.map((list) => (
-        <TodoListItem key={list.id.toString()} item={list} />
-      ))}
-  </div>
-);
+const TodoListsItems = ({
+  todoItems,
+}: {
+  todoItems: TodoItem[] | undefined;
+}) => {
+  const utils = trpc.useContext();
+  const markAsComplete = trpc.todoItems.markAsComplete.useMutation({
+    onSuccess: () => {
+      if (todoItems) {
+        console.log("invalidate", todoItems[0]?.todoListId);
+        utils.todoItems.inList.invalidate(todoItems[0]?.todoListId);
+      }
+    },
+  });
+
+  const handleComplete = async () => {
+    await markAsComplete.mutateAsync(todoItems?.map((i) => i.id) ?? []);
+  };
+
+  return (
+    <div>
+      <div className="flex max-w-xl justify-end">
+        <div>
+          <input
+            className="focus:shadow-outline mr-0 ml-auto cursor-pointer items-end rounded bg-emerald-500 py-1.5 px-4 font-bold text-white hover:bg-emerald-700 focus:outline-none disabled:cursor-not-allowed  disabled:bg-neutral-500 dark:text-white"
+            type="button"
+            onClick={handleComplete}
+            value="Complete All"
+            disabled={todoItems?.every((i) => i.isComplete)}
+          />
+        </div>
+      </div>
+      {todoItems &&
+        todoItems.map((item) => (
+          <TodoListItem key={item.id.toString()} item={item} />
+        ))}
+    </div>
+  );
+};
 
 const TodoListItem = ({ item }: { item: TodoItem }) => {
   const [claimEditTodo, setClaimEditTodo] = useAtom(claimEditModeAtom);
-  const [complete, setComplete] = useState<boolean>(item.isComplete);
 
   const utils = trpc.useContext();
   const updateTodo = trpc.todoItems.update.useMutation({
@@ -78,12 +109,8 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
     }
   };
 
-  const toggleCompleted = async (
-    itemToComplete: TodoItem,
-    event: ChangeEvent<HTMLInputElement>
-  ) => {
-    setComplete(event.currentTarget.checked);
-    await toggleComplete.mutateAsync(itemToComplete.id);
+  const toggleCompleted = async (itemToToggle: TodoItem, isOn: boolean) => {
+    await toggleComplete.mutateAsync(itemToToggle.id);
   };
 
   const deleteTodo = async (itemToDelete: TodoItem) => {
@@ -161,38 +188,28 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
             <span
               className={clsx(
                 "inline dark:text-white",
-                complete && "line-through"
+                item.isComplete && "line-through"
               )}
             >
               {item.title}
             </span>
             <span className="grow" />
             <PencilIcon
-              title={!complete ? "Edit" : "Cant edit completed item"}
+              title={!item.isComplete ? "Edit" : "Cant edit completed item"}
               onClick={() => editModeOn()}
               className={clsx(
                 "ml-2 h-6 w-6 cursor-pointer",
-                complete
+                item.isComplete
                   ? "text-gray-200 dark:text-gray-400"
                   : "text-black dark:text-white"
               )}
             />
-            <label
-              htmlFor="default-toggle"
-              className="relative ml-2 inline-flex cursor-pointer items-center"
-              title="Mark as done"
-            >
-              <input
-                type="checkbox"
-                onChange={(event) => {
-                  toggleCompleted(item, event);
-                }}
-                checked={complete}
-                id="default-toggle"
-                className="peer sr-only"
-              ></input>
-              <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-emerald-500 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 dark:border-gray-600 dark:bg-gray-400 dark:peer-focus:ring-emerald-800"></div>
-            </label>
+            <Toggle
+              id={`toggle-${item.id}`}
+              isOn={item.isComplete}
+              onToggle={(isOn) => toggleCompleted(item, isOn)}
+              toolTip="Toggle done"
+            />
             <TrashIcon
               title="Delete"
               onClick={() => deleteTodo(item)}

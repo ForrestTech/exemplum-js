@@ -45,7 +45,7 @@ const AddTodoItemForm = ({ todoListId }: { todoListId: bigint }) => {
         <div className="flex justify-end">
           <div>
             <input
-              className="focus:shadow-outline mr-0 ml-auto items-end rounded bg-emerald-500 py-1.5 px-4 font-bold text-white hover:bg-emerald-700 focus:outline-none disabled:cursor-not-allowed  disabled:bg-neutral-500 dark:text-white"
+              className="focus:shadow-outline mr-0 ml-auto items-end rounded bg-emerald-500 py-1.5 px-4 font-bold text-white hover:bg-emerald-700 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-500 dark:text-white"
               type="submit"
               value="Add"
               disabled={addTodoItem.isLoading || !isValid}
