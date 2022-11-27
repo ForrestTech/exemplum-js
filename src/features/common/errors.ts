@@ -1,22 +1,4 @@
-// export class FieldErrors {
-//   message: string;
-//   path: string[];
-//   constructor(message: string, path: string[]) {
-//     this.message = message;
-//     this.path = path;
-//   }
-// }
-
-// export class ApplicationError extends Error {
-//   constructor(message: string, code: string, errors: FieldErrors[]) {
-//     super(message);
-//     this.name = "ApplicationError";
-//     this.code = code;
-//     this.errors = errors;
-//   }
-//   code: string;
-//   errors: FieldErrors[];
-// }
+import { isTRPCClientError } from "utils/trpc";
 
 export type FieldErrors = {
   message: string;
@@ -25,20 +7,25 @@ export type FieldErrors = {
 };
 
 export class ApplicationError extends Error {
-  constructor(message: string, code: string, errors: FieldErrors[]) {
+  constructor(message: string, errors: FieldErrors[]) {
     super(message);
     this.name = "ApplicationError";
     this.errors = errors;
   }
   errors: FieldErrors[];
 }
-
-interface HandleError {
-  canHandle: boolean;
-  applicationError?: ApplicationError;
+interface isApplicationError {
+  fieldErrors: FieldErrors[];
 }
 
-const cantHandle = { canHandle: false };
+const isApplicationError = (error: unknown): error is isApplicationError => {
+  return typeof error === "object" && error !== null && "fieldErrors" in error;
+};
+
+const cantHandle = {
+  canHandle: false,
+  applicationError: new ApplicationError("", []),
+};
 
 interface HasErrorMessage {
   message: string;
@@ -62,7 +49,23 @@ const getErrorMessage = (error: unknown): string | undefined => {
   return undefined;
 };
 
-const isUniqueConstraintError = (error: unknown): HandleError => {
+interface HandleError {
+  canHandle: boolean;
+  applicationError: ApplicationError;
+}
+
+export const handleError = (error: unknown): HandleError => {
+  for (const handler of errorHandlers) {
+    const { canHandle, applicationError } = handler(error);
+    if (canHandle) {
+      return { canHandle, applicationError };
+    }
+  }
+
+  return cantHandle;
+};
+
+const handleUniqueConstraintError = (error: unknown): HandleError => {
   const errorMessage = getErrorMessage(error);
   if (!errorMessage) {
     return cantHandle;
@@ -72,7 +75,7 @@ const isUniqueConstraintError = (error: unknown): HandleError => {
   const isUniqueConstraintError = errorMessage.includes(findKey);
 
   if (!isUniqueConstraintError) {
-    return { canHandle: false };
+    return cantHandle;
   }
 
   const fieldSection = errorMessage.split(findKey)[1];
@@ -98,21 +101,18 @@ const isUniqueConstraintError = (error: unknown): HandleError => {
   };
 };
 
-const isApplicationError = (error: unknown): HandleError => {
-  console.log("try to handle errors", error);
-
-  return { canHandle: false };
-};
-
-const errorHandlers = [isApplicationError, isUniqueConstraintError];
-
-export const handleError = (error: unknown): HandleError => {
-  for (const handler of errorHandlers) {
-    const { canHandle, applicationError } = handler(error);
-    if (canHandle) {
-      return { canHandle, applicationError };
-    }
+const handleApplicationError = (error: unknown): HandleError => {
+  if (isTRPCClientError(error)) {
+    return {
+      canHandle: true,
+      applicationError: new ApplicationError(
+        error.data?.message ?? "An error occurred.",
+        error.data?.fieldErrors ?? []
+      ),
+    };
   }
 
   return cantHandle;
 };
+
+const errorHandlers = [handleApplicationError, handleUniqueConstraintError];

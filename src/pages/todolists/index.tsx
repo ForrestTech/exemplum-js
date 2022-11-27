@@ -88,7 +88,6 @@ const TodoListEntry = ({ todoList }: { todoList: TodoList }) => {
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
     setListTitle(event.target.value);
   };
 

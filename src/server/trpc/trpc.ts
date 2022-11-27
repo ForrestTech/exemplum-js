@@ -13,7 +13,8 @@ const t = initTRPC.context<Context>().create({
       ...shape,
       data: {
         ...shape.data,
-        applicationError:
+        message: error.cause?.message,
+        fieldErrors:
           error.cause instanceof ApplicationError ? error.cause.errors : null,
         zodError:
           error.code === "BAD_REQUEST" && error.cause instanceof ZodError

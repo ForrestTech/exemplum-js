@@ -11,6 +11,10 @@ export const OutstandingTasks = () => (
       </li>
       <li>Use cva for my buttons react-cva</li>
       <li>
+        Explore more ts-fs options plus using either for update due date and
+        exhaustive pattern matching replacement
+      </li>
+      <li>
         CI/CD process
         https://github.com/trpc/examples-next-prisma-starter/blob/main/.github/workflows/main.yml
       </li>
@@ -27,10 +31,6 @@ export const OutstandingTasks = () => (
       </li>
       <li>Migrate to Linear for task management</li>
       <li>Integrate Polly like retry for calling weather API</li>
-      <li>
-        Explore more ts-fs options plus using either for update due date and
-        exhaustive pattern matching replacement
-      </li>
       <li>Add unit tests for update due date</li>
       <li>
         Integrate the date picker (date format feature/ ability to set

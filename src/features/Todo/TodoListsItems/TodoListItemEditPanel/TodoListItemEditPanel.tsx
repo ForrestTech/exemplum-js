@@ -8,6 +8,7 @@ import { Menu } from "@headlessui/react";
 import { BarsArrowUpIcon } from "@heroicons/react/20/solid";
 import toast from "react-hot-toast";
 import { PriorityLevel } from "@features/Todo/todoItems";
+import { handleError } from "@features/common/errors";
 
 type TodoItem = AppRouterOutputTypes["todoItems"]["create"];
 interface TodoListItemEditPanelProps {
@@ -52,8 +53,9 @@ const TodoListItemEditPanel = ({ item }: TodoListItemEditPanelProps) => {
       });
       toast.success("Due date updated");
     } catch (error) {
-      if (isTRPCClientError(error)) {
-        toast.error(error.message);
+      const { canHandle, applicationError } = handleError(error);
+      if (canHandle) {
+        toast.error(applicationError.message);
       }
     }
   };

@@ -34,14 +34,10 @@ export class Result<T> {
     return new Result<T>(value, undefined);
   }
 
-  static failed<T>(
-    message: string,
-    code?: string,
-    errors?: FieldErrors[]
-  ): Result<T> {
+  static failed<T>(message: string, errors?: FieldErrors[]): Result<T> {
     return new Result<T>(
       undefined,
-      new ApplicationError(message, code ?? message, errors ?? [])
+      new ApplicationError(message, errors ?? [])
     );
   }
 }

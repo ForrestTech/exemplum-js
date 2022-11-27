@@ -71,13 +71,6 @@ export const scheduleDueDateHandler = (
     return Result.success({ itemToScheduleId, dueDate });
   }
   return Result.failed(
-    "Can't schedule multiple items to be due on the same day",
-    "SCHEDULE_ERROR",
-    [
-      {
-        message: "Can't schedule multiple items to be due on the same day",
-        path: ["dueDate"],
-      },
-    ]
+    "Can't schedule multiple items to be due on the same day"
   );
 };
