@@ -2,6 +2,9 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import type { Context } from "./context";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { ApplicationError } from "@features/common/errors";
+
+//todo validate if we can move back to just types for application error. Make application error a wrapper around errors that can be serialized
 
 const t = initTRPC.context<Context>().create({
   transformer: superjson,
@@ -10,6 +13,8 @@ const t = initTRPC.context<Context>().create({
       ...shape,
       data: {
         ...shape.data,
+        applicationError:
+          error.cause instanceof ApplicationError ? error.cause.errors : null,
         zodError:
           error.code === "BAD_REQUEST" && error.cause instanceof ZodError
             ? error.cause.flatten()

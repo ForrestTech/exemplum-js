@@ -101,17 +101,15 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
       setClaimEditTodo(undefined);
       toast.success("Item updated");
     } catch (error) {
-      const { canHandle, message } = handleError(error);
+      const { canHandle, applicationError } = handleError(error);
       if (canHandle) {
-        toast.error(message);
+        toast.error(applicationError?.message);
       }
     }
   };
 
-  const toggleCompleted = async (itemToToggle: TodoItem, isOn: boolean) => {
-    if (isOn) {
-      await toggleComplete.mutateAsync(itemToToggle.id);
-    }
+  const toggleCompleted = async (itemToToggle: TodoItem) => {
+    await toggleComplete.mutateAsync(itemToToggle.id);
   };
 
   const deleteTodo = async (itemToDelete: TodoItem) => {
@@ -208,7 +206,7 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
             <Toggle
               id={`toggle-${item.id}`}
               isOn={item.isComplete}
-              onToggle={(isOn) => toggleCompleted(item, isOn)}
+              onToggle={() => toggleCompleted(item)}
               toolTip="Toggle done"
             />
             <TrashIcon

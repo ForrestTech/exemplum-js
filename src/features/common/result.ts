@@ -1,19 +1,10 @@
-type Errors = {
-  field: string;
-  message: string;
-};
-
-export type Failed = {
-  code?: string;
-  message: string;
-  errors: Errors[];
-};
+import { ApplicationError, FieldErrors } from "./errors";
 
 export class Result<T> {
   private value?: T;
-  private failed?: Failed;
+  private failed?: ApplicationError;
 
-  private constructor(value?: T, failed?: Failed) {
+  private constructor(value?: T, failed?: ApplicationError) {
     this.value = value;
     this.failed = failed;
   }
@@ -25,7 +16,7 @@ export class Result<T> {
     return this.value;
   }
 
-  get failure(): Failed {
+  get failure(): ApplicationError {
     if (this.failed === undefined) {
       throw new Error("Failed is undefined");
     }
@@ -46,12 +37,11 @@ export class Result<T> {
   static failed<T>(
     message: string,
     code?: string,
-    errors?: Errors[]
+    errors?: FieldErrors[]
   ): Result<T> {
-    return new Result<T>(undefined, {
-      code,
-      message,
-      errors: errors ?? [],
-    });
+    return new Result<T>(
+      undefined,
+      new ApplicationError(message, code ?? message, errors ?? [])
+    );
   }
 }

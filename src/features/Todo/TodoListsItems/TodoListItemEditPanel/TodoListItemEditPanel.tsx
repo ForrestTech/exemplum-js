@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 import { useMemo, useState } from "react";
 import Datepicker from "tailwind-datepicker-react";
 import { claimEditModeAtom } from "../TodoListsItems";
-import { AppRouterOutputTypes, trpc } from "utils/trpc";
+import { AppRouterOutputTypes, isTRPCClientError, trpc } from "utils/trpc";
 import { Menu } from "@headlessui/react";
 import { BarsArrowUpIcon } from "@heroicons/react/20/solid";
 import toast from "react-hot-toast";
@@ -42,13 +42,20 @@ const TodoListItemEditPanel = ({ item }: TodoListItemEditPanelProps) => {
     },
   });
 
-  const changeDueDate = (dueDate: Date) => {
-    updateDueDate.mutateAsync({
-      id: item.id,
-      todoListId: item.todoListId,
-      dueDate,
-    });
-    toast.success("Due date updated");
+  const changeDueDate = async (dueDate: Date) => {
+    try {
+      await updateDueDate.mutateAsync({
+        id: item.id,
+        todoListId: item.todoListId,
+        dueDate,
+        random: 6,
+      });
+      toast.success("Due date updated");
+    } catch (error) {
+      if (isTRPCClientError(error)) {
+        toast.error(error.message);
+      }
+    }
   };
 
   const changeReminder = (reminder: Date) => {

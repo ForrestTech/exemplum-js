@@ -54,21 +54,30 @@ export const updatePriorityLevelHandler = (
 export const scheduleDueDateHandler = (
   scheduledItems: { id: bigint; dueDate: Date | null }[],
   itemToScheduleId: bigint,
-  scheduleDueDate: Date
-): Result<{ itemToScheduleId: bigint; scheduleDueDate: Date }> => {
+  dueDate: Date
+): Result<{ itemToScheduleId: bigint; dueDate: Date }> => {
   /* 
   This is a contrived example where we are not allowed to schedule multiple tasks to be due on the same hour. 
   We would probably never do this but it demonstrates functional business logic acting on a set of domain items and 
   passing back a result object 
   */
-  const canSchedule = scheduledItems.every(
-    (item) => dayjs(item.dueDate).diff(scheduleDueDate, "hour") > 1
-  );
+  const canSchedule = scheduledItems.every((item) => {
+    const diff = dayjs(item.dueDate).diff(dueDate, "day");
+    diff;
+    return diff !== 0;
+  });
 
   if (canSchedule) {
-    return Result.success({ itemToScheduleId, scheduleDueDate });
+    return Result.success({ itemToScheduleId, dueDate });
   }
   return Result.failed(
-    "Cannot schedule multiple items to be due on the same hour"
+    "Can't schedule multiple items to be due on the same day",
+    "SCHEDULE_ERROR",
+    [
+      {
+        message: "Can't schedule multiple items to be due on the same day",
+        path: ["dueDate"],
+      },
+    ]
   );
 };

@@ -12,6 +12,7 @@
     "seed": "prisma db seed",
     "db-reset": "prisma migrate reset",
     "studio": "prisma studio",
+    "watch-test": "vitest",
     "test": "run-s test:*",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",

@@ -8,7 +8,7 @@ import {
 } from "@features/Todo/todoItems";
 import { PriorityLevel, Prisma } from "@prisma/client";
 import { now } from "@features/common/dates";
-import { handleFailure } from "server/common/errorMapping";
+import { throwTRPCError } from "utils/trpc";
 
 /**
  * Default selector for TodoItem.
@@ -136,6 +136,7 @@ export const todoItemRouter = router({
         id: z.bigint(),
         todoListId: z.bigint(),
         dueDate: z.date().min(now()),
+        random: z.number().min(5),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -154,13 +155,13 @@ export const todoItemRouter = router({
         const updateTodo = await ctx.prisma.todoItem.update({
           select: defaultTodoItemSelect,
           where: { id: scheduleDate.result.itemToScheduleId },
-          data: { dueDate: scheduleDate.result.scheduleDueDate },
+          data: { dueDate: scheduleDate.result.dueDate },
         });
 
         return updateTodo;
       }
 
-      handleFailure(scheduleDate.failure);
+      throwTRPCError(scheduleDate.failure);
     }),
   updateReminder: protectedProcedure
     .input(z.object({ id: z.bigint(), reminder: z.date() }))

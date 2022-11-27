@@ -1,11 +1,25 @@
 // src/utils/trpc.ts
 import superjson from "superjson";
-
-import { httpBatchLink, loggerLink } from "@trpc/client";
+import { httpBatchLink, loggerLink, TRPCClientError } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
-import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+import { inferRouterInputs, inferRouterOutputs, TRPCError } from "@trpc/server";
+import { ApplicationError } from "@features/common/errors";
 
 import type { AppRouter } from "../server/trpc/router/_app";
+
+export function isTRPCClientError(
+  cause: unknown
+): cause is TRPCClientError<AppRouter> {
+  return cause instanceof TRPCClientError;
+}
+
+export const throwTRPCError = (failed: ApplicationError) => {
+  throw new TRPCError({
+    code: "BAD_REQUEST",
+    message: failed.message,
+    cause: failed,
+  });
+};
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url

@@ -2,8 +2,6 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>Add unit tests for update due date</li>
-      <li>Update error handlers to support failure</li>
       <li>
         Add aggregate function query example (count of tasks by priority level)
       </li>
@@ -30,6 +28,11 @@ export const OutstandingTasks = () => (
       <li>Migrate to Linear for task management</li>
       <li>Integrate Polly like retry for calling weather API</li>
       <li>
+        Explore more ts-fs options plus using either for update due date and
+        exhaustive pattern matching replacement
+      </li>
+      <li>Add unit tests for update due date</li>
+      <li>
         Integrate the date picker (date format feature/ ability to set
         placeholder/does not have to have default date ){" "}
       </li>
@@ -45,10 +48,6 @@ export const OutstandingTasks = () => (
       <li>
         Server side caching (as its serverless this would need to be a central
         redis style cache) Render possibly
-      </li>
-      <li>
-        Explore more ts-fs options plus using either for update due date and
-        exhaustive pattern matching replacement
       </li>
       <li>
         Add a wrapper around dates so no hard dependency on daysjs is taken ??
