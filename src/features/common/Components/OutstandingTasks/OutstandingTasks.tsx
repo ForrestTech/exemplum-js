@@ -2,15 +2,8 @@ export const OutstandingTasks = () => (
   <div>
     <p className="font-medium dark:text-white">Still to do:</p>
     <ul className="dark:text-white">
-      <li>
-        Database Transaction (more like bulk update) (nark multiple items as
-        done)
-      </li>
-      <li>
-        encapsulation of domain logic full stack (cant schedule a task due date
-        for the same hour)
-      </li>
-      <li>collection helpers for typescript</li>
+      <li>Add unit tests for update due date</li>
+      <li>Update error handlers to support failure</li>
       <li>
         Add aggregate function query example (count of tasks by priority level)
       </li>
@@ -34,7 +27,7 @@ export const OutstandingTasks = () => (
         https://vercel.com/docs/concepts/git/vercel-for-github changesets
         https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md
       </li>
-      <li>Migrate to Github new tasks management</li>
+      <li>Migrate to Linear for task management</li>
       <li>Integrate Polly like retry for calling weather API</li>
       <li>
         Integrate the date picker (date format feature/ ability to set
@@ -53,7 +46,13 @@ export const OutstandingTasks = () => (
         Server side caching (as its serverless this would need to be a central
         redis style cache) Render possibly
       </li>
-      <li>Explore more ts-fs options</li>
+      <li>
+        Explore more ts-fs options plus using either for update due date and
+        exhaustive pattern matching replacement
+      </li>
+      <li>
+        Add a wrapper around dates so no hard dependency on daysjs is taken ??
+      </li>
       <li>
         Add attachment integrations, so we can upload file and have an example
         of file storage

@@ -1,5 +1,5 @@
 import { atom, useAtom } from "jotai";
-import { ChangeEvent, useMemo, useState } from "react";
+import { useMemo } from "react";
 import {
   CheckIcon,
   PencilIcon,
@@ -12,7 +12,7 @@ import clsx from "clsx";
 import TodoListItemEditPanel from "./TodoListItemEditPanel/TodoListItemEditPanel";
 import { updateTodoItemSchema } from "../todoItems";
 import { useZodForm } from "@features/common/Components/Forms/Form";
-import { errorHandler } from "@features/common/errorHelpers";
+import { handleError } from "@features/common/errors";
 import Toggle from "@features/common/Components/Toggle/Toggle";
 
 type TodoItem = AppRouterOutputTypes["todoItems"]["create"];
@@ -28,7 +28,6 @@ const TodoListsItems = ({
   const markAsComplete = trpc.todoItems.markAsComplete.useMutation({
     onSuccess: () => {
       if (todoItems) {
-        console.log("invalidate", todoItems[0]?.todoListId);
         utils.todoItems.inList.invalidate(todoItems[0]?.todoListId);
       }
     },
@@ -102,7 +101,7 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
       setClaimEditTodo(undefined);
       toast.success("Item updated");
     } catch (error) {
-      const { canHandle, message } = errorHandler(error);
+      const { canHandle, message } = handleError(error);
       if (canHandle) {
         toast.error(message);
       }
@@ -110,7 +109,9 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
   };
 
   const toggleCompleted = async (itemToToggle: TodoItem, isOn: boolean) => {
-    await toggleComplete.mutateAsync(itemToToggle.id);
+    if (isOn) {
+      await toggleComplete.mutateAsync(itemToToggle.id);
+    }
   };
 
   const deleteTodo = async (itemToDelete: TodoItem) => {

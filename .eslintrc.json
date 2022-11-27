@@ -5,12 +5,15 @@
     "ecmaVersion": 2018, // Allows for the parsing of modern ECMAScript features
     "sourceType": "module" // Allows for the use of imports
   },
-  "overrides": [
-    {
-      "files": ["**/?(*.)+(spec|test).[jt]s?(x)"],
-      "extends": ["plugin:testing-library/react"]
-    }
-  ],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
+  },
   "plugins": ["@typescript-eslint"],
   "extends": [
     "next/core-web-vitals",

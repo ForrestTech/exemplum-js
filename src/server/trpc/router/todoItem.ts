@@ -2,11 +2,13 @@ import { router, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import {
   createTodoItemSchema,
+  scheduleDueDateHandler,
   updatePriorityLevelHandler,
   updateTodoItemSchema,
 } from "@features/Todo/todoItems";
 import { PriorityLevel, Prisma } from "@prisma/client";
-import { now } from "@features/common/dateHelpers";
+import { now } from "@features/common/dates";
+import { handleFailure } from "server/common/errorMapping";
 
 /**
  * Default selector for TodoItem.
@@ -129,14 +131,36 @@ export const todoItemRouter = router({
       return todoItems;
     }),
   updateDueDate: protectedProcedure
-    .input(z.object({ id: z.bigint(), dueDate: z.date() }))
+    .input(
+      z.object({
+        id: z.bigint(),
+        todoListId: z.bigint(),
+        dueDate: z.date().min(now()),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
-      const todoItem = await ctx.prisma.todoItem.update({
-        select: defaultTodoItemSelect,
-        where: { id: input.id },
-        data: input,
+      const listItems = await ctx.prisma.todoItem.findMany({
+        select: { id: true, dueDate: true },
+        where: { todoListId: input.todoListId },
       });
-      return todoItem;
+
+      const scheduleDate = scheduleDueDateHandler(
+        listItems,
+        input.id,
+        input.dueDate
+      );
+
+      if (scheduleDate.isSuccess) {
+        const updateTodo = await ctx.prisma.todoItem.update({
+          select: defaultTodoItemSelect,
+          where: { id: scheduleDate.result.itemToScheduleId },
+          data: { dueDate: scheduleDate.result.scheduleDueDate },
+        });
+
+        return updateTodo;
+      }
+
+      handleFailure(scheduleDate.failure);
     }),
   updateReminder: protectedProcedure
     .input(z.object({ id: z.bigint(), reminder: z.date() }))

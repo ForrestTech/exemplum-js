@@ -26,7 +26,7 @@ const TodoListItemEditPanel = ({ item }: TodoListItemEditPanelProps) => {
   const utils = trpc.useContext();
   const updateDueDate = trpc.todoItems.updateDueDate.useMutation({
     onSuccess: (input) => {
-      utils.todoItems.inList.invalidate(input.todoListId);
+      utils.todoItems.inList.invalidate(input?.todoListId);
     },
   });
 
@@ -43,7 +43,11 @@ const TodoListItemEditPanel = ({ item }: TodoListItemEditPanelProps) => {
   });
 
   const changeDueDate = (dueDate: Date) => {
-    updateDueDate.mutateAsync({ id: item.id, dueDate });
+    updateDueDate.mutateAsync({
+      id: item.id,
+      todoListId: item.todoListId,
+      dueDate,
+    });
     toast.success("Due date updated");
   };
 

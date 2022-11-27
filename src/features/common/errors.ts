@@ -33,7 +33,7 @@ const errorHandlers = [isUniqueConstraintError];
 
 const cantHandle = { canHandle: false, field: undefined, message: "" };
 
-export const errorHandler = (
+export const handleError = (
   error: unknown
 ): {
   canHandle: boolean;

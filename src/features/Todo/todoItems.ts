@@ -1,6 +1,7 @@
 import { match } from "ts-pattern";
 import { z } from "zod";
 import dayjs from "dayjs";
+import { Result } from "@features/common/result";
 
 export const createTodoItemSchema = z.object({
   title: z.string().min(3, { message: "Title is required" }).max(255),
@@ -48,4 +49,26 @@ export const updatePriorityLevelHandler = (
       dueDate: dayjs(currentDate).add(2, "weeks").toDate(),
     }))
     .exhaustive();
+};
+
+export const scheduleDueDateHandler = (
+  scheduledItems: { id: bigint; dueDate: Date | null }[],
+  itemToScheduleId: bigint,
+  scheduleDueDate: Date
+): Result<{ itemToScheduleId: bigint; scheduleDueDate: Date }> => {
+  /* 
+  This is a contrived example where we are not allowed to schedule multiple tasks to be due on the same hour. 
+  We would probably never do this but it demonstrates functional business logic acting on a set of domain items and 
+  passing back a result object 
+  */
+  const canSchedule = scheduledItems.every(
+    (item) => dayjs(item.dueDate).diff(scheduleDueDate, "hour") > 1
+  );
+
+  if (canSchedule) {
+    return Result.success({ itemToScheduleId, scheduleDueDate });
+  }
+  return Result.failed(
+    "Cannot schedule multiple items to be due on the same hour"
+  );
 };
