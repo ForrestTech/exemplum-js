@@ -1,4 +1,4 @@
-import { isTRPCClientError } from "utils/trpc";
+import { isTRPCClientError } from "../../utils/trpc";
 
 export type FieldErrors = {
   message: string;
