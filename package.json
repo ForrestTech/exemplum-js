@@ -12,9 +12,9 @@
     "seed": "prisma db seed",
     "db-reset": "prisma migrate reset",
     "studio": "prisma studio",
-    "watch-test": "vitest",
-    "test": "run-s test:*",
-    "test:unit": "vitest run",
+    "test": "vitest run unit",
+    "test-watch": "vitest unit",
+    "test:integration": "vitest integration",
     "test:e2e": "playwright test",
     "prettier:check": "prettier --check \"**/*.{ts,tsx}\"",
     "prettier:write": "prettier --write \"**/*.{ts,tsx}\""
@@ -23,6 +23,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@changesets/cli": "^2.25.2",
     "@headlessui/react": "^1.7.3",
     "@heroicons/react": "^2.0.12",
     "@hookform/resolvers": "^2.9.10",

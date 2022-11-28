@@ -9,6 +9,7 @@ import {
 import { PriorityLevel, Prisma } from "@prisma/client";
 import { now } from "@features/common/dates";
 import { throwTRPCError } from "utils/trpc";
+import { groupBy, groupMap } from "@features/common/collections";
 
 /**
  * Default selector for TodoItem.
@@ -173,4 +174,33 @@ export const todoItemRouter = router({
       });
       return todoItem;
     }),
+  stats: protectedProcedure.query(async ({ ctx }) => {
+    // examples of using prisma aggregate functions
+    const states = await ctx.prisma.todoItem.groupBy({
+      by: ["priorityLevel"],
+      where: {
+        isComplete: false,
+      },
+      _count: {
+        id: true,
+      },
+    });
+    return states;
+  }),
+  statsProjections: protectedProcedure.query(async ({ ctx }) => {
+    // examples of using prisma aggregate functions
+    const todoItems = await ctx.prisma.todoItem.findMany();
+
+    const priorityLevelGroups = groupBy(
+      todoItems,
+      (item) => item.priorityLevel
+    );
+
+    return groupMap(priorityLevelGroups, (map) => {
+      return {
+        priorityLevel: map[0],
+        _count: map[1].length,
+      };
+    });
+  }),
 });

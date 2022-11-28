@@ -19,10 +19,10 @@ export const sum = <T>(array: T[], selector: (item: T) => number): number => {
   );
 };
 
-export const group = <T>(
+export const groupBy = <T, K>(
   array: T[],
-  selector: (item: T) => string
-): Map<string, T[]> => {
+  selector: (item: T) => K
+): Map<K, T[]> => {
   const map = new Map();
   array.forEach((item) => {
     const key = selector(item);
@@ -34,6 +34,13 @@ export const group = <T>(
     }
   });
   return map;
+};
+
+export const groupMap = <T, K, U>(
+  maps: Map<K, T[]>,
+  selector: (map: [K, T[]]) => U
+): U[] => {
+  return Array.from(maps).map((map) => selector(map));
 };
 
 export const distinct = <T>(

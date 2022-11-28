@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 import { useMemo, useState } from "react";
 import Datepicker from "tailwind-datepicker-react";
 import { claimEditModeAtom } from "../TodoListsItems";
-import { AppRouterOutputTypes, isTRPCClientError, trpc } from "utils/trpc";
+import { AppRouterOutputTypes, trpc } from "utils/trpc";
 import { Menu } from "@headlessui/react";
 import { BarsArrowUpIcon } from "@heroicons/react/20/solid";
 import toast from "react-hot-toast";

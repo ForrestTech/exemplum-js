@@ -1,4 +1,4 @@
-import { isTRPCClientError } from "utils/trpc";
+import { isTRPCClientError } from "../../utils/trpc";
 
 export type FieldErrors = {
   message: string;
@@ -14,13 +14,6 @@ export class ApplicationError extends Error {
   }
   errors: FieldErrors[];
 }
-interface isApplicationError {
-  fieldErrors: FieldErrors[];
-}
-
-const isApplicationError = (error: unknown): error is isApplicationError => {
-  return typeof error === "object" && error !== null && "fieldErrors" in error;
-};
 
 const cantHandle = {
   canHandle: false,
