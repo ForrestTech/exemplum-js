@@ -74,7 +74,7 @@ const TodoListItemEditPanel = ({ item }: TodoListItemEditPanelProps) => {
     <div
       className={clsx(
         !isEditMode && "hidden",
-        "flex max-w-xl p-4 hover:bg-gray-100 dark:bg-slate-800"
+        "flex max-w-xl p-4 hover:bg-gray-100 dark:bg-dark-800"
       )}
     >
       <div className="relative w-44">
@@ -122,9 +122,9 @@ const TodoListItemEditPanel = ({ item }: TodoListItemEditPanelProps) => {
       <div className="pt-8 pl-4 ">
         <Menu
           as="div"
-          className="relative inline-block rounded-md  text-left dark:hover:bg-slate-600"
+          className="relative inline-block rounded-md  text-left dark:hover:bg-dark-600"
         >
-          <Menu.Button className="inline-flex w-full justify-center rounded-md px-4 py-2 text-sm font-medium uppercase text-white shadow-sm hover:bg-slate-900/5">
+          <Menu.Button className="inline-flex w-full justify-center rounded-md px-4 py-2 text-sm font-medium uppercase text-white shadow-sm hover:bg-dark-900/5">
             {item.priorityLevel ?? "Set Priority"}
             <BarsArrowUpIcon
               className="-mr-1 ml-2 h-5 w-5"
@@ -133,7 +133,7 @@ const TodoListItemEditPanel = ({ item }: TodoListItemEditPanelProps) => {
           </Menu.Button>
           <Menu.Items
             as="section"
-            className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md border border-slate-400 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+            className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md border border-dark-400 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
           >
             {Object.keys(PriorityLevel).map((priority) => (
               <Menu.Item
@@ -141,7 +141,7 @@ const TodoListItemEditPanel = ({ item }: TodoListItemEditPanelProps) => {
                 key={priority}
                 onClick={() => changePriority(priority as PriorityLevel)}
               >
-                <span className="block py-2 px-4 text-sm text-gray-700 dark:bg-slate-800 dark:text-gray-400 dark:hover:bg-slate-600">
+                <span className="block py-2 px-4 text-sm text-gray-700 dark:bg-dark-800 dark:text-gray-400 dark:hover:bg-dark-600">
                   {priority}
                 </span>
               </Menu.Item>

@@ -31,7 +31,7 @@ export const NavBar = () => {
 
   return (
     <>
-      <nav className="bg-emerald-500  dark:bg-neutral-900">
+      <nav className="bg-brand-500  dark:bg-neutral-900">
         <div className="container mx-auto flex flex-wrap items-center justify-between p-3">
           <span className="self-center whitespace-nowrap text-2xl font-light tracking-[0.5rem] text-white">
             <Bars3Icon
@@ -86,7 +86,7 @@ const SupportDropDown = () => {
             <Menu.Item>
               <a
                 href="#"
-                className="block  px-4 py-2 text-sm font-medium text-emerald-500 hover:bg-gray-400/5 hover:underline"
+                className="block  px-4 py-2 text-sm font-medium text-brand-500 hover:bg-gray-400/5 hover:underline"
               >
                 Github Discussions
               </a>

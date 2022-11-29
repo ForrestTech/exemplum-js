@@ -2,6 +2,7 @@ import { trpc } from "utils/trpc";
 import { useZodForm } from "@features/common/Components/Forms/Form";
 import { createTodoItemSchema } from "../todoItems";
 import toast from "react-hot-toast";
+import Button from "@features/common/Components/Button/Button";
 
 const AddTodoItemForm = ({ todoListId }: { todoListId: bigint }) => {
   const trpcContext = trpc.useContext();
@@ -44,12 +45,13 @@ const AddTodoItemForm = ({ todoListId }: { todoListId: bigint }) => {
         </div>
         <div className="flex justify-end">
           <div>
-            <input
-              className="focus:shadow-outline mr-0 ml-auto items-end rounded bg-emerald-500 py-1.5 px-4 font-bold text-white hover:bg-emerald-700 focus:outline-none disabled:cursor-not-allowed disabled:bg-neutral-500 dark:text-white"
+            <Button
               type="submit"
-              value="Add"
+              intent="primary"
               disabled={addTodoItem.isLoading || !isValid}
-            />
+            >
+              Add
+            </Button>
           </div>
         </div>
       </div>
