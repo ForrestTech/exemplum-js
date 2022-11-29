@@ -33,3 +33,7 @@ test("Schedule Due Date return success when there is a date range greater than 1
 
   expect(actual.isSuccess).toBe(true);
 });
+
+test("Failing Test", () => {
+  expect(true).toBe(false);
+});
