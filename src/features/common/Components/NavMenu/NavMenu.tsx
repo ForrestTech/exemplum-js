@@ -120,7 +120,7 @@ const NavLink = ({ icon, href, label }: NavLinkProps) => {
           className={clsx(
             "pl-4 align-top",
             isActive(router.pathname, href)
-              ? "font-bold text-emerald-500"
+              ? "font-bold text-brand-500"
               : "text-gray-500 dark:text-white"
           )}
         >

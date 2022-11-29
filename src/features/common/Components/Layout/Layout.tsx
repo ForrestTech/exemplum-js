@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <>
       <div className="h-full bg-white dark:bg-neutral-800">
         <NavBar />
-        <main className="container mx-auto min-h-screen p-4">{children}</main>
+        <main className="container mx-auto min-h-screen p-8">{children}</main>
         <Footer />
       </div>
     </>

@@ -42,7 +42,7 @@ const TodoListsItems = ({
       <div className="flex max-w-xl justify-end">
         <div>
           <input
-            className="focus:shadow-outline mr-0 ml-auto cursor-pointer items-end rounded bg-emerald-500 py-1.5 px-4 font-bold text-white hover:bg-emerald-700 focus:outline-none disabled:cursor-not-allowed  disabled:bg-neutral-500 dark:text-white"
+            className="focus:shadow-outline mr-0 ml-auto cursor-pointer items-end rounded bg-brand-500 py-1.5 px-4 font-bold text-white hover:bg-brand-700 focus:outline-none disabled:cursor-not-allowed  disabled:bg-neutral-500 dark:text-white"
             type="button"
             onClick={handleComplete}
             value="Complete All"
@@ -130,8 +130,8 @@ const TodoListItem = ({ item }: { item: TodoItem }) => {
     <div className="grid-row-2 mt-2 grid max-w-xl">
       <div
         className={clsx(
-          isEditMode && "bg-gray-100 dark:bg-slate-600",
-          "flex p-8 shadow-md shadow-emerald-900 hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600"
+          isEditMode && "bg-gray-100 dark:bg-dark-600",
+          "flex p-8 shadow-md shadow-brand-900 hover:bg-gray-100 dark:bg-dark-700 dark:hover:bg-dark-600"
         )}
       >
         {isEditMode ? (

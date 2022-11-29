@@ -5,7 +5,7 @@ export const Footer = () => (
       <div className="text-l w-full font-light tracking-[0.5rem]">Exemplum</div>
       <div className="w-full">
         <p className="pb-2 text-black dark:text-white">Community</p>
-        <ul className="text-emerald-500 underline">
+        <ul className="text-brand-500 underline">
           <li className="pb-2">
             <a
               href="https://discord.gg/exemplum-js"
@@ -28,7 +28,7 @@ export const Footer = () => (
       </div>
       <div className="w-full">
         <p className="pb-2 text-black dark:text-white">Contact</p>
-        <ul className="text-emerald-500 underline">
+        <ul className="text-brand-500 underline">
           <li className="pb-2">
             <a href="https://t3.gg/discord" target="_blank" rel="noreferrer">
               T3 Discord
@@ -41,7 +41,7 @@ export const Footer = () => (
       </div>
       <div className="w-full">
         <p className="pb-2 text-black dark:text-white">Project</p>
-        <ul className="text-emerald-500 underline">
+        <ul className="text-brand-500 underline">
           <li className="pb-2">
             <a href="/project/about">About</a>
           </li>
@@ -58,7 +58,7 @@ export const Footer = () => (
           href="https://github.com/ForrestTech/exemplum-js/blob/main/LICENSE"
           target="_blank"
           rel="noreferrer"
-          className="pr-2 text-emerald-500 underline"
+          className="pr-2 text-brand-500 underline"
         >
           MIT License.
         </a>

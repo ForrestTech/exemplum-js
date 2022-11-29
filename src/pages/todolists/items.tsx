@@ -40,12 +40,12 @@ const Lists: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Todo Lists</title>
+        <title>Todo Items</title>
       </Head>
       <Layout>
         <div className="flex">
           <div className="grow">
-            <h1 className="mb-8 text-4xl dark:text-white">Todo Lists</h1>
+            <h1 className="mb-8 text-4xl dark:text-white">Todo Items</h1>
             <h2 className="mb-8 text-2xl dark:text-white">
               <LoadingWrapper
                 data={list}
